@@ -4,12 +4,17 @@
 <template>
   <div class="login">
     <h1>登录页面</h1>
-    <i-switch>11</i-switch>
+    <Button @click="toIndex">去主页</Button>
   </div>
 </template>
 
 <script>
 export default {
-  name: "login"
+  name: "login",
+  methods: {
+    toIndex() {
+      this.$router.replace({name: 'index'})
+    }
+  }
 };
 </script>
