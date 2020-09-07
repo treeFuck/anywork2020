@@ -7,9 +7,17 @@
             {{exerciseDetails}}
         </div>
         <div class="ans-item-container">
-            <div class="ans-row-container" v-for="item in ansRowList" :key="item.key">
+            <div class="ans-row-container" v-for="item in ansRowList" :key="item.key" v-if="type === 1 || type === 2">
                 <div>{{item.vocabulary}}</div>
                 <div>{{item.ans}}</div>
+            </div>
+            <div class="fill-input-container" v-if="type === 3">
+                <input
+                        class="fill-field"
+                        v-for="item in fillNumber"
+                        :key="item.key"
+                        v-model="item.fillContent">
+                </input>
             </div>
         </div>
     </div>
@@ -22,6 +30,10 @@
         props: {
             exeIndex: {
                 type: Number
+            },
+            //如果是填空题的话，这个字段表示填空的数量，用于动态显示若干个输入框
+            fillNumber: {
+                type: Array
             },
             type: {
                 type: Number

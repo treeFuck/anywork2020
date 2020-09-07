@@ -2,7 +2,6 @@
 .header-container {
   $headerHeight: 3rem;
   height: $headerHeight;
-  background-color: yellow;
 
   @mixin header-share {
     display: flex;

@@ -2,6 +2,7 @@ $color: #548cfe;
 
 .exercise-content-container {
   $exerciseNumberHeight: 2rem;
+  margin: 2rem 0 2rem 0;
 
   .exercise-content-number {
     height: $exerciseNumberHeight;
@@ -13,6 +14,7 @@ $color: #548cfe;
   }
 
   .exercise-content-details {
+    margin-bottom: 1rem;
     font: {
       size: 1.3rem;
     }
@@ -47,6 +49,23 @@ $rowHeight: 3rem;
   height: 100%;
   line-height: $rowHeight;
   margin-left: 1rem;
+  font-size: 1rem;
+}
+
+.fill-input-container {
+  .fill-field:before {
+    content: '答案';
+  }
+
+  .fill-field {
+    width: 30%;
+    border: 1px solid #548cfe;
+    box-shadow: 0 0 2px 2px #548cfe;
+    padding: 0 10px 0 6px;
+    font-size: 1.3em;
+    color: #548cfe;
+    margin-right: 1.5rem;
+  }
 }
 
 

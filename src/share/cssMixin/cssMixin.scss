@@ -1,0 +1,6 @@
+//公共样式混入，一些能够复用的样式可以写在这个地方，例如flex，inline布局等等
+@mixin flex-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

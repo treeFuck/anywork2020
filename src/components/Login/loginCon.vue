@@ -56,6 +56,7 @@ export default {
           console.log(res.data.data)
            this.$store.commit('addUserInfo', res.data.data);
            console.log(this.$store.state.userInfo);
+          this.$router.replace({ name: "exercise" });
         });
       // http://qgailab.com/anywork/user/login
     }

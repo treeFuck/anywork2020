@@ -8,45 +8,11 @@ const _Request = axios.create({
     baseURL: baseUrl,
     headers: {
         'Content-Type': 'application/json',
-        'cookie': 'M2FhMDcxNzYtYTEyZS00Y2E1LWE1YzItMWRmZWMzY2RlMzMw;'
-    }
+    },
+    crossDomain: true,
+    withCredentials: true
 });
 
-// /**
-//  * 统一对请求进行处理
-//  */
-// _Request.interceptors.request.use((config) => {
-//     // 当存在token的时候，将token加到请求头上面
-//     if (localStorage.getItem("AuthorizationAdmin")) {
-//         config.headers['Authorization'] = JSON.parse(localStorage.getItem("AuthorizationAdmin")).value;
-//     }
-//     return config
-// }, error => {
-//     //403
-//     //500 做出相应的错误提示
-// })
-
-// /**
-//  * 统一对返回的数据进行过滤
-//  */
-// _Request.interceptors.response.use((result) => {
-//     // 当没有前面的问题的时候，返回请求对象的数据
-//     //拿取头部证书
-//     if(!localStorage.getItem("AuthorizationAdmin")) {
-//         localStorage.setItem("AuthorizationAdmin", JSON.stringify({
-//             value: result.headers.authorization,
-//             expires: new Date().getTime() + 2400 * 1000
-//         }))
-//     }
-//     return result.data;
-// }, (error) => {
-//     //  console.log(error)
-//     // 请求发生错误的时候
-//     let status = error.response.status;
-//
-//
-//     return error;
-// });
 
 /**
  * 封装请求类
@@ -54,7 +20,7 @@ const _Request = axios.create({
  */
 export default class request {
     static getMethods(url, callback) {
-        _Request.get(baseUrl + url).then((data) => {
+        _Request.get(url).then((data) => {
             callback(data.data)
         });
     }

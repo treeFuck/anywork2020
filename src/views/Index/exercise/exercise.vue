@@ -4,6 +4,7 @@
 
 <template>
     <div class="exercise-container">
+        <calculagrapha></calculagrapha>
         <div class="header-component-container">
             <exerciseHeader :headerTitle="'课前预习'"></exerciseHeader>
         </div>
@@ -13,6 +14,7 @@
                         v-for="item in exerciseList"
                         :key="item.questionId"
                         :exeIndex="item.index"
+                        :fillNumber="item.fillNumber"
                         :content="item.content"
                         :id="item.questionId"
                         :ansList="item.ansList"
@@ -25,12 +27,12 @@
 </template>
 
 <script>
-    import exerciseHeader from "../../../component/exerciseComponent/exerciseHeader/exerciseHeader";
-    import exerciseContent from "../../../component/exerciseComponent/exerciseContent/exerciseContent";
+    import exerciseHeader from "../../../components/exerciseComponent/exerciseHeader/exerciseHeader";
+    import exerciseContent from "../../../components/exerciseComponent/exerciseContent/exerciseContent";
     import exerciseApi from "../../../share/api/exerciseApi";
     import {data} from "../../../share/testData/exercise";
-    import LoginApi from "../../../share/api/loginApi";
-    import {reFormatData} from "../../../component/exerciseComponent/exerciseContent/utils";
+    import {reFormatData} from "../../../components/exerciseComponent/exerciseContent/utils";
+    import calculagrapha from "../../../components/exerciseComponent/calculagraph/calculagraph";
 
     export default {
         name: "exercise",
@@ -43,20 +45,15 @@
 
         components: {
             exerciseHeader: exerciseHeader,
-            exerciseContent: exerciseContent
+            exerciseContent: exerciseContent,
+            calculagrapha: calculagrapha
         },
 
         mounted() {
-            // LoginApi.login({
-            //     "studentId": "3118004982",
-            //     "password": "123456",
-            //     "valcode": "123"
-            // }, (data) => {
-            //     console.log(data)
-            //     exerciseApi.getExerciseContent({testpaperId: 24, choice: 0}, () => {
-            //
-            //     })
+            // exerciseApi.getExerciseContent({"testpaperId": "24", "choice": "0"}, (res) => {
+            //     console.log(res)
             // })
+
             let a = this.dataControl(data.data)
             this.viewRender(a)
         },

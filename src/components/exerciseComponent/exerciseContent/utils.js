@@ -9,6 +9,7 @@
 export function reFormatData(outerData, index) {
     const formatData = {
         "index": index + 1,
+        "fillNumber": initFillInputKey(outerData.other),
         "questionId": outerData.questionId,
         "type": outerData.type,
         "content": outerData.content,
@@ -65,3 +66,15 @@ export function reFormatData(outerData, index) {
 
     return formatData
 }
+
+//根据outerData.other字段即填空题坑的个数动态生成一个带key和填空内容的数组的数组
+function initFillInputKey(number) {
+    const key = []
+
+    for (let i = 0; i < number; i++) {
+        key.push({key: i, fillContent: ''})
+    }
+
+    return key
+}
+
