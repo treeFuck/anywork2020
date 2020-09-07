@@ -13,6 +13,8 @@ Vue.component('Button', Button);
 // 引入axios
 import axios from 'axios';
 Vue.prototype.$axios = axios;
+axios.defaults.crossDomain = true; // 设置cross跨域
+axios.defaults.withCredentials = true; // 允许跨域携带cookie信息
 
 // 服务器请求地址，挂载为全局变量
 Vue.prototype.$httpUrl =
