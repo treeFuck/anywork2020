@@ -1,0 +1,52 @@
+$color: #548cfe;
+
+.exercise-content-container {
+  $exerciseNumberHeight: 2rem;
+
+  .exercise-content-number {
+    height: $exerciseNumberHeight;
+    line-height: $exerciseNumberHeight;
+    color: $color;
+    font: {
+      size: 1.3rem;
+    }
+  }
+
+  .exercise-content-details {
+    font: {
+      size: 1.3rem;
+    }
+  }
+}
+
+$rowHeight: 3rem;
+.ans-item-container {
+  .ans-row-container {
+    height: $rowHeight;
+    line-height: $rowHeight;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font: {
+      size: 1.3rem;
+    }
+  }
+}
+
+.ans-row-container div:nth-child(1) {
+  $circleSize: 2rem;
+  height: $circleSize;
+  width: $circleSize;
+  border-radius: 50%;
+  border: 1px solid $color;
+  text-align: center;
+  line-height: $circleSize;
+}
+
+.ans-row-container div:nth-child(2) {
+  height: 100%;
+  line-height: $rowHeight;
+  margin-left: 1rem;
+}
+
+

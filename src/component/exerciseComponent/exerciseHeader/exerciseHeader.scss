@@ -1,0 +1,43 @@
+//这里用到了scss样式，如果有不明白的请自行查看scss官网
+.header-container {
+  $headerHeight: 3rem;
+  height: $headerHeight;
+  background-color: yellow;
+
+  @mixin header-share {
+    display: flex;
+    flex-direction: row;
+    height: $headerHeight;
+  }
+
+  .header-left-container {
+    @include header-share;
+    float: left;
+
+    img {
+      height: $headerHeight;
+      width: 3.5rem;
+    }
+
+    .header-left-title {
+      height: $headerHeight;
+      line-height: $headerHeight;
+      margin-left: 1.5rem;
+      font: {
+        size: 1.4rem;
+        weight: bold;
+      }
+      color: cornflowerblue;
+    }
+  }
+
+  .header-right-container {
+    @include header-share;
+    float: right;
+
+    img {
+      height: $headerHeight;
+      width: 3.5rem;
+    }
+  }
+}

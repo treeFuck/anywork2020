@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import SynRouter from './SynRouter'
+
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/exercise'
   },
   {
     path: '/login',
@@ -16,12 +18,17 @@ const routes = [
   {
     path: '/index',
     name: 'index',
-    component: () => import('../views/Index/Index.vue')
+    component: () => import('../views/Index/Index.vue'),
   },
   {
     path: '*',
     name: '404',
     component: () => import('../views/404/404.vue')
+  },
+  {
+    path: '/exercise',
+    name: 'exercise',
+    component: () => import ("../views/Index/exercise/exercise")
   }
 ]
 
