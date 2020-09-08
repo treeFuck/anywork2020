@@ -1,4 +1,3 @@
-<script src="../../main.js"></script>
 <style scoped lang="scss">
   .con {
     position: relative;
