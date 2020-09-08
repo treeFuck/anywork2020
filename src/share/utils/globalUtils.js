@@ -10,9 +10,14 @@ export function formatDate(currentDate) {
     function verify(value) {
         return value > 10 ? value : `${0 + value}`
     }
+
     let hours = verify(currentDate.getHours())
     let minutes = verify(currentDate.getMinutes())
     let seconds = verify(currentDate.getSeconds())
 
     return `${hours-minutes-seconds}`
+}
+
+export function verifyDateFormat(value) {
+    return value > 10 ? value : `0${value}`
 }

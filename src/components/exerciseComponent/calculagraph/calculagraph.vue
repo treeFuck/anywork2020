@@ -23,7 +23,7 @@
 <template>
     <div class="calculagraph-container">
         <div class="calculagraph-details-container">
-            03:36:29
+            {{calculateDate}}
         </div>
 
         <div class="calculagraph-details-container">
@@ -33,12 +33,15 @@
 </template>
 
 <script>
+    import * as globalUtils from '../../../share/utils/globalUtils'
+    //右下角悬浮定时器组件
     export default {
         name: "calculagraph",
 
         data() {
             return {
-                calculateDate: 0
+                dateStart: 0,
+                calculateDate: '00:00:00'
             }
         },
 
@@ -46,12 +49,25 @@
 
         },
 
+        mounted() {
+            this.calculateStart()
+        },
+
         methods: {
             //时间倒数开始
             calculateStart() {
                 setInterval(() => {
-
+                    this.dateStart++
+                    this.calculateDate = this.dateShow(this.dateStart)
                 }, 1000)
+            },
+
+            dateShow(count) {
+                let seconds = globalUtils.verifyDateFormat(count % 60)
+                let minutes = globalUtils.verifyDateFormat(parseInt((count / 60).toString()) % 60)
+                let hours = globalUtils.verifyDateFormat(parseInt((count / 60 / 60).toString()))
+
+                return `${hours}:${minutes}:${seconds}`
             }
         }
     }
