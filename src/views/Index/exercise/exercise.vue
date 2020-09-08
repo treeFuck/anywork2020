@@ -55,12 +55,7 @@
         },
 
         mounted() {
-            // exerciseApi.getExerciseContent({"testpaperId": "24", "choice": "0"}, (res) => {
-            //     console.log(res)
-            // })
-
-            let a = this.dataControl(data.data)
-            this.viewRender(a)
+            this.getExerciseData()
         },
 
         methods: {
@@ -78,6 +73,13 @@
                 return renderData
             },
 
+            //页面渲染的时候请求习题
+            getExerciseData() {
+                exerciseApi.getExerciseContent({"testpaperId": "24", "choice": "0"}, (res) => {
+                    console.log(res)
+                    this.viewRender(this.dataControl(res.data))
+                })
+            },
 
             //那自己整理的数据结构渲染成为视图
             viewRender(renderData) {

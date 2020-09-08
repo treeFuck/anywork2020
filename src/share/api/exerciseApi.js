@@ -13,6 +13,6 @@ export default class ExerciseApi extends request {
 
     //获取课前预习习题
     static getExerciseContent (data, callback) {
-        this.postMethods('test/none/detail', data, callback)
+         this.postMethods('test/none/detail', data, callback)
     }
 }
