@@ -1,13 +1,13 @@
 <template>
     <div class="header-container">
         <div class="header-left-container">
-            <img src="../../../assets/images_ysy/headerTitle.png"/>
+            <img src="../../../assets/images_ysy/preview@3x.png"/>
             <div class="header-left-title">
                 {{headerTitle}}
             </div>
         </div>
         <div class="header-right-container">
-            <img src="../../../assets/images_ysy/headerTitle.png"/>
+            <img src="../../../assets/images_ysy/anywork@3x.png"/>
         </div>
     </div>
 </template>

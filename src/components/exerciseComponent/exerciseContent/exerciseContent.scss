@@ -21,14 +21,17 @@ $color: #548cfe;
   }
 }
 
-$rowHeight: 3rem;
+$rowHeight: 1.5rem;
 .ans-item-container {
   .ans-row-container {
-    height: $rowHeight;
     line-height: $rowHeight;
     display: flex;
     flex-direction: row;
     align-items: center;
+    white-space: pre-line;
+    word-wrap: break-word;
+    word-break: break-all;
+    margin-bottom: 1rem;
     font: {
       size: 1.3rem;
     }
@@ -43,6 +46,7 @@ $rowHeight: 3rem;
   border: 1px solid $color;
   text-align: center;
   line-height: $circleSize;
+  color: $color;
 }
 
 .ans-row-container div:nth-child(2) {
@@ -50,6 +54,7 @@ $rowHeight: 3rem;
   line-height: $rowHeight;
   margin-left: 1rem;
   font-size: 1rem;
+  color: black;
 }
 
 .fill-input-container {

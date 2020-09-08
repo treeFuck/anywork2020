@@ -19,9 +19,12 @@
                         :id="item.questionId"
                         :ansList="item.ansList"
                         :type="item.type"
-                >
+                >exercise-container
                 </exerciseContent>
             </div>
+        </div>
+        <div>
+            <submitBtn></submitBtn>
         </div>
     </div>
 </template>
@@ -33,6 +36,7 @@
     import {data} from "../../../share/testData/exercise";
     import {reFormatData} from "../../../components/exerciseComponent/exerciseContent/utils";
     import calculagrapha from "../../../components/exerciseComponent/calculagraph/calculagraph";
+    import submitBtn from "../../../components/exerciseComponent/submitBtn/submitBtn";
 
     export default {
         name: "exercise",
@@ -46,7 +50,8 @@
         components: {
             exerciseHeader: exerciseHeader,
             exerciseContent: exerciseContent,
-            calculagrapha: calculagrapha
+            calculagrapha: calculagrapha,
+            submitBtn: submitBtn
         },
 
         mounted() {

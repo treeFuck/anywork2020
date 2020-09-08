@@ -1,6 +1,15 @@
 //公共样式混入，一些能够复用的样式可以写在这个地方，例如flex，inline布局等等
+
+//flex mixin
 @mixin flex-layout {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+//div文字垂直水平居中mixin
+@mixin text-align-center($lineHeight) {
+  text-align: center;
+  line-height: $lineHeight;
+}
+

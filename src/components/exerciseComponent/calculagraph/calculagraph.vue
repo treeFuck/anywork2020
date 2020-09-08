@@ -64,7 +64,7 @@
 
             dateShow(count) {
                 let seconds = globalUtils.verifyDateFormat(count % 60)
-                let minutes = globalUtils.verifyDateFormat(parseInt((count / 60).toString()) % 60)
+                let minutes = globalUtils.verifyDateFormat(parseInt(((count / 60) % 60).toString()))
                 let hours = globalUtils.verifyDateFormat(parseInt((count / 60 / 60).toString()))
 
                 return `${hours}:${minutes}:${seconds}`
