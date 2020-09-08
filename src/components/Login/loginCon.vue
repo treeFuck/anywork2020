@@ -112,12 +112,12 @@
       return {
         password: "123456",
         studentId: "3118004972",
-        valcode: "111",
+        valcode: "",
       };
     },
     computed: {
       barcodeURL() {
-        return `${this.$httpUrl}/utils/valcode?${new Date().valueOf()}`
+        return `${process.env.VUE_APP_URL}/utils/valcode?${new Date().valueOf()}`
       }
 
     },
@@ -128,6 +128,10 @@
           password: this.password,
           studentId: this.studentId,
           valcode: this.valcode
+        }
+        if(!this.valcode) {
+          this.$Message.warning("请输入验证码");
+          return;
         }
         loginApi.loginHTTP(send).then(res => {
           if (res.data.state == 1) {
