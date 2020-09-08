@@ -51,14 +51,14 @@ export default {
         valcode: "1"
       }
       this.$axios
-        .post(this.$httpUrl + "user/login", send)
+        .post(this.$httpUrl + "/user/login", send)
         .then(res => {
-          console.log(res.data.data)
+          console.log(res)
            this.$store.commit('addUserInfo', res.data.data);
            console.log(this.$store.state.userInfo);
-          this.$router.replace({ name: "exercise" });
+          this.$router.push({ name: "exercise" });
         });
-      // http://qgailab.com/anywork/user/login
+      
     }
   }
 };
