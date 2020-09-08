@@ -19,12 +19,15 @@
                         :id="item.questionId"
                         :ansList="item.ansList"
                         :type="item.type"
+                        @collect="collectUserAnswerResult"
                 >exercise-container
                 </exerciseContent>
             </div>
         </div>
         <div>
-            <submitBtn></submitBtn>
+            <submitBtn
+                    @submit="confirmSubmitData"
+            ></submitBtn>
         </div>
     </div>
 </template>
@@ -37,13 +40,15 @@
     import {reFormatData} from "../../../components/exerciseComponent/exerciseContent/utils";
     import calculagrapha from "../../../components/exerciseComponent/calculagraph/calculagraph";
     import submitBtn from "../../../components/exerciseComponent/submitBtn/submitBtn";
+    import * as globalUtils from '../../../share/utils/globalUtils'
 
     export default {
         name: "exercise",
 
         data() {
             return {
-                exerciseList: null
+                exerciseList: null,
+                collectUserAnswerList: new Map()
             }
         },
 
@@ -51,7 +56,7 @@
             exerciseHeader: exerciseHeader,
             exerciseContent: exerciseContent,
             calculagrapha: calculagrapha,
-            submitBtn: submitBtn
+            submitBtn: submitBtn,
         },
 
         mounted() {
@@ -75,10 +80,42 @@
 
             //页面渲染的时候请求习题
             getExerciseData() {
-                exerciseApi.getExerciseContent({"testpaperId": "24", "choice": "0"}, (res) => {
+                exerciseApi.getExerciseContent({"testpaperId": "27", "choice": "0"}, (res) => {
                     console.log(res)
                     this.viewRender(this.dataControl(res.data))
                 })
+            },
+
+            //选择单个题目之后通过在组件中emit，触发这个方法，从而收集用户的填写答案
+            collectUserAnswerResult(collectResult) {
+                this.collectUserAnswerList.set(collectResult.questionId, collectResult.studentAnswer)
+                console.log(this.collectUserAnswerList)
+            },
+
+            //btn组件点击确认之后触发事件，进行答案提交
+            confirmSubmitData(type) {
+                const requestData = {
+                    "studentId": 1,
+                    "testpaperId": 1,
+                    // int 1为临时保存，0为正常提交,
+                    "temporarySave": type.submitOrSave,
+                    // string 格式为yyyy-MM-dd HH:mm:ss
+                    "endTime": globalUtils.getCurrentDate(),
+                    "studentAnswer": []
+                }
+
+                for (const key of this.collectUserAnswerList) {
+                    requestData.studentAnswer.push({
+                        questionId: key[0],
+                        studentAnswer: key[1]
+                    })
+                }
+
+                exerciseApi.submitAnswerData(requestData, (res) => {
+                    console.log(res)
+                })
+
+                console.log(requestData)
             },
 
             //那自己整理的数据结构渲染成为视图

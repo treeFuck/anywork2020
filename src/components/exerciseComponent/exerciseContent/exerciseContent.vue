@@ -3,12 +3,19 @@
         <div class="exercise-content-number">
             {{exeNumber}} ({{exeType}})
         </div>
-        <div class="exercise-content-details" v-text="exerciseDetails">
+        <div class="exercise-content-details">
             {{exerciseDetails}}
         </div>
         <div class="ans-item-container">
             <div class="ans-row-container" v-for="item in ansRowList" :key="item.key" v-if="type === 1 || type === 2">
-                <div>{{item.vocabulary}}</div>
+                <div
+                        :style="item.isChoose ?
+                        'background-color: #548cfe; color: white' :
+                        'background-color: white; color: #548cfe'"
+                        @click="chooseItem(item, ansRowList)"
+                >
+                    {{item.vocabulary}}
+                </div>
                 <div>{{item.ans}}</div>
             </div>
             <div class="fill-input-container" v-if="type === 3">
@@ -16,7 +23,8 @@
                         class="fill-field"
                         v-for="item in fillNumber"
                         :key="item.key"
-                        v-model="item.fillContent">
+                        v-model="item.fillContent"
+                >
                 </input>
             </div>
         </div>
@@ -46,7 +54,7 @@
             },
             ansList: {
                 type: Array
-            }
+            },
         },
 
         data() {
@@ -57,8 +65,10 @@
                 exerciseDetails: this.content,
                 //存放答案选项
                 ansRowList: this.ansList,
-                //题目类似，单选，判断，填空
-                exeType: null
+                //题目类型，单选，判断，填空
+                exeType: null,
+                //存储学生回答情况数组
+                studentAnswerList: new Map()
             }
         },
 
@@ -83,7 +93,21 @@
                         break
                     }
                 }
+            },
+
+            //点击选择题或者判断题选项之后的操作,新选中的按钮更换颜色，原来的按钮还原状态
+            chooseItem(node, itemArr) {
+                itemArr.forEach(item => {
+                    item.isChoose = item === node;
+                })
+                //触发父组件的方法收集答案集合
+                this.$emit('collect', {
+                    "questionId": this.id,
+                    "studentAnswer": node.vocabulary
+                })
             }
+
+            //
         }
 
     }

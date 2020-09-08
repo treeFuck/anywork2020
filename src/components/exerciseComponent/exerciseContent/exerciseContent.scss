@@ -15,6 +15,9 @@ $color: #548cfe;
 
   .exercise-content-details {
     margin-bottom: 1rem;
+    white-space: pre-line;
+    word-wrap: break-word;
+    word-break: break-all;
     font: {
       size: 1.3rem;
     }
@@ -28,9 +31,6 @@ $rowHeight: 1.5rem;
     display: flex;
     flex-direction: row;
     align-items: center;
-    white-space: pre-line;
-    word-wrap: break-word;
-    word-break: break-all;
     margin-bottom: 1rem;
     font: {
       size: 1.3rem;
@@ -41,6 +41,7 @@ $rowHeight: 1.5rem;
 .ans-row-container div:nth-child(1) {
   $circleSize: 2rem;
   height: $circleSize;
+  cursor: pointer;
   width: $circleSize;
   border-radius: 50%;
   border: 1px solid $color;

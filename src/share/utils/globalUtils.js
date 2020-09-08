@@ -17,3 +17,8 @@ export function formatDate(currentDate) {
 export function verifyDateFormat(value) {
     return value > 10 ? value : `0${value}`
 }
+
+//获取当前时间，并转变为yyyy-MM-dd的格式
+export function getCurrentDate() {
+    return formatDate(new Date())
+}

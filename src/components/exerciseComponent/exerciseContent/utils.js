@@ -23,22 +23,27 @@ export function reFormatData(outerData, index) {
                 {
                     key: 1,
                     vocabulary: 'A',
-                    ans: outerData.a
+                    ans: outerData.a,
+                    //是否被选中
+                    isChoose: false
                 },
                 {
                     key: 2,
                     vocabulary: 'B',
-                    ans: outerData.b
+                    ans: outerData.b,
+                    isChoose: false
                 },
                 {
                     key: 3,
                     vocabulary: 'C',
-                    ans: outerData.c
+                    ans: outerData.c,
+                    isChoose: false
                 },
                 {
                     key: 4,
                     vocabulary: 'D',
-                    ans: outerData.d
+                    ans: outerData.d,
+                    isChoose: false
                 },
             ]
             break
