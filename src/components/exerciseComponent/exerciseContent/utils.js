@@ -52,13 +52,15 @@ export function reFormatData(outerData, index) {
             formatData.ansList = [
                 {
                     key: 1,
-                    vocabulary: '✔',
-                    ans: ''
+                    vocabulary: '1',
+                    ans: '',
+                    isChoose: false
                 },
                 {
                     key: 2,
-                    vocabulary: '❌',
-                    ans: ''
+                    vocabulary: '0',
+                    ans: '',
+                    isChoose: false
                 },
             ]
             break

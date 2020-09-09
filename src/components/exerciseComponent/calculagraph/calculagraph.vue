@@ -9,6 +9,7 @@
         .calculagraph-details-container {
             @include flex-layout;
             $circleSize: 70px;
+            cursor: pointer;
             margin: 10px 0;
             border-radius: 50%;
             width: $circleSize;
@@ -26,7 +27,7 @@
             {{calculateDate}}
         </div>
 
-        <div class="calculagraph-details-container">
+        <div class="calculagraph-details-container" @click="backToTop">
             回到顶部
         </div>
     </div>
@@ -68,6 +69,11 @@
                 let hours = globalUtils.verifyDateFormat(parseInt((count / 60 / 60).toString()))
 
                 return `${hours}:${minutes}:${seconds}`
+            },
+
+            //回到顶部
+            backToTop() {
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
             }
         }
     }

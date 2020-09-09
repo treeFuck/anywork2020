@@ -19,7 +19,6 @@
                         :id="item.questionId"
                         :ansList="item.ansList"
                         :type="item.type"
-                        @collect="collectUserAnswerResult"
                 >exercise-container
                 </exerciseContent>
             </div>
@@ -41,6 +40,7 @@
     import calculagrapha from "../../../components/exerciseComponent/calculagraph/calculagraph";
     import submitBtn from "../../../components/exerciseComponent/submitBtn/submitBtn";
     import * as globalUtils from '../../../share/utils/globalUtils'
+    import {reFormatExerciseContent} from "./utils";
 
     export default {
         name: "exercise",
@@ -48,7 +48,6 @@
         data() {
             return {
                 exerciseList: null,
-                collectUserAnswerList: new Map()
             }
         },
 
@@ -80,22 +79,17 @@
 
             //页面渲染的时候请求习题
             getExerciseData() {
-                exerciseApi.getExerciseContent({"testpaperId": "27", "choice": "0"}, (res) => {
+                exerciseApi.getExerciseContent({"testpaperId": "27", "choice": "0"}).then((res) => {
                     console.log(res)
-                    this.viewRender(this.dataControl(res.data))
+                    this.viewRender(this.dataControl(res.data.data))
                 })
             },
 
-            //选择单个题目之后通过在组件中emit，触发这个方法，从而收集用户的填写答案
-            collectUserAnswerResult(collectResult) {
-                this.collectUserAnswerList.set(collectResult.questionId, collectResult.studentAnswer)
-                console.log(this.collectUserAnswerList)
-            },
 
             //btn组件点击确认之后触发事件，进行答案提交
             confirmSubmitData(type) {
                 const requestData = {
-                    "studentId": 1,
+                    "studentId": this.$store.state.userInfo.userId,
                     "testpaperId": 1,
                     // int 1为临时保存，0为正常提交,
                     "temporarySave": type.submitOrSave,
@@ -104,12 +98,8 @@
                     "studentAnswer": []
                 }
 
-                for (const key of this.collectUserAnswerList) {
-                    requestData.studentAnswer.push({
-                        questionId: key[0],
-                        studentAnswer: key[1]
-                    })
-                }
+                //整理请求格式
+                this.reFormatExerciseContent(requestData.studentAnswer)
 
                 exerciseApi.submitAnswerData(requestData, (res) => {
                     console.log(res)
@@ -118,10 +108,62 @@
                 console.log(requestData)
             },
 
+            //遍历练习数组，整理用户填写的答案整理为后端数据发送格式
+            reFormatExerciseContent(requestArray) {
+                this.exerciseList.forEach(item => {
+                    switch (item.type) {
+                        case 2: {
+                        }
+                        case 1: {
+                            const data = {
+                                questionId: item.questionId,
+                                studentAnswer: ''
+                            }
+
+                            item.ansList.forEach(value => {
+                                value.isChoose && (data.studentAnswer = value.vocabulary)
+                            })
+
+                            requestArray.push(data)
+                            break
+                        }
+                        case 3: {
+                            const userAns = item.fillNumber
+
+                            const data = {
+                                questionId: item.questionId,
+                                studentAnswer: ''
+                            }
+
+                            requestArray.push(data)
+
+                            //如果是一个题有几个填空位置，不同回答之间需要用∏隔开
+                            userAns.forEach(value => {
+                                data.studentAnswer += value.fillContent + '∏'
+                            })
+
+                            //把末尾多余的一个∏替换掉
+                            data.studentAnswer = data.studentAnswer.substring(0, data.studentAnswer.length - 1)
+
+                            break
+                        }
+
+                        default: {
+                            throw new Error('前端出现错误，没有这个题目类型')
+                        }
+                    }
+                })
+            },
+
             //那自己整理的数据结构渲染成为视图
             viewRender(renderData) {
                 this.exerciseList = renderData
             },
+
+            //从路由参数中获取学生的测试卷子的id
+            getExercisePaperId() {
+                this.$route.query
+            }
 
 
         }
