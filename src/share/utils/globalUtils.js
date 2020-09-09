@@ -11,11 +11,11 @@ export function formatDate(currentDate) {
     let minutes = verifyDateFormat(currentDate.getMinutes())
     let seconds = verifyDateFormat(currentDate.getSeconds())
 
-    return `${hours - minutes - seconds}`
+    return `${hours}:${minutes}:${seconds}`
 }
 
 export function verifyDateFormat(value) {
-    return value > 10 ? value : `0${value}`
+    return value >= 10 ? value : `0${value}`
 }
 
 //获取当前时间，并转变为yyyy-MM-dd的格式

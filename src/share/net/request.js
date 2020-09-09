@@ -8,17 +8,40 @@ const _Request = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    crossDomain: true,
-    withCredentials: true
+});
+
+/**
+ * 统一对请求进行处理
+ */
+_Request.interceptors.request.use((config) => {
+    // 当存在token的时候，将token加到请求头上面
+    if (localStorage.getItem("AuthorizationAdmin")) {
+        config.headers['Authorization'] = JSON.parse(localStorage.getItem("Authorization")).value;
+    }
+    return config
+}, error => {
+    //403
+    //500 做出相应的错误提示
+})
+
+/**
+ * 统一对返回的数据进行过滤
+ */
+_Request.interceptors.response.use((result) => {
+    // 当没有前面的问题的时候，返回请求对象的数据
+    //拿取头部证书
+    if(!localStorage.getItem("Authorization")) {
+        localStorage.setItem("Authorization", JSON.stringify({
+            value: result.headers.authorization,
+        }))
+    }
+    return result.data;
+}, (error) => {
 });
 
 
 /**
  * 封装请求类
- * callback 需要使用箭头函数，不然会出现this指向错误
- * isNeedNotice 表示是否需要进行弹窗提醒，例如请求失败前端提醒失败原因
- * isNeedNotice 如果不传或者传入false表示默认不提醒，如果传入true表示默认提示后台返回的内容，
- * 如果需要自定以提醒则传入你想要提醒的内容
  */
 export default class request {
     static getMethods(url) {

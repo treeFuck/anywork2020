@@ -10,6 +10,7 @@
 
     .btn {
         float: right;
+        cursor: pointer;
         @include text-align-center($heightBtn);
         height: $heightBtn;
         width: 104px;

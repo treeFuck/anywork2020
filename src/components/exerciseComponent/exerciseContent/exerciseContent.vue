@@ -1,11 +1,11 @@
 <template>
     <div class="exercise-content-container">
         <div class="exercise-content-number">
-            {{exeNumber}} ({{exeType}})
+            {{exeNumber}}. ({{exeType}})
         </div>
-        <div class="exercise-content-details">
+        <pre class="exercise-content-details">
             {{exerciseDetails}}
-        </div>
+        </pre>
         <div class="ans-item-container">
             <div class="ans-row-container" v-for="item in ansRowList" :key="item.key" v-if="type === 1 || type === 2">
                 <div
@@ -14,7 +14,7 @@
                         'background-color: white; color: #548cfe'"
                         @click="chooseItem(item, ansRowList)"
                 >
-                    {{item.vocabulary}}
+                    {{showCorrectCircle(item.vocabulary)}}
                 </div>
                 <div>{{item.ans}}</div>
             </div>
@@ -100,14 +100,18 @@
                 itemArr.forEach(item => {
                     item.isChoose = item === node;
                 })
-                //触发父组件的方法收集答案集合
-                this.$emit('collect', {
-                    "questionId": this.id,
-                    "studentAnswer": node.vocabulary
-                })
-            }
+            },
 
-            //
+            //根据vocabulary判断是显示英文还是显示钩和叉
+            showCorrectCircle (value) {
+                if (value == 1) {
+                    return '✔'
+                } else if (value == 0) {
+                    return '✗'
+                }
+                return value
+            },
+
         }
 
     }
