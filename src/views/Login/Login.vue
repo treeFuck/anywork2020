@@ -9,7 +9,7 @@
     background-repeat: no-repeat;
     background-position: bottom right;
     background-image: url("../../assets/images/draw@2x.png");
-    .top {
+    .bottom {
       position: absolute;
       bottom: 0.2em;
       left: 0.7em;
@@ -28,7 +28,7 @@
 
 <template>
   <div class="con">
-    <div class="top">
+    <div class="bottom">
       Welcome To Anywork &nbsp; &nbsp; : )
     </div>
     <div class="left">

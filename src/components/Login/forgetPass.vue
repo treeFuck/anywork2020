@@ -81,7 +81,7 @@
         this.loading = true;
         setTimeout(() => {
           this.loading = false;
-          this.$Model.success({
+          this.$Modal.success({
             title: "提交成功",
             content: "请留意邮箱信息通知。",
             onOk: () => {

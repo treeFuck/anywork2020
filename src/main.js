@@ -9,7 +9,7 @@ import 'view-design/dist/styles/iview.css';
 
 
 Vue.prototype.$Message = Message;
-Vue.prototype.$Model = Modal;
+Vue.prototype.$Modal = Modal;
 Vue.component('i-switch', Switch);
 Vue.component('Button', Button);
 Vue.component('i-input', Input);
