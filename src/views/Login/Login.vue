@@ -22,8 +22,8 @@
 <template>
   <div class="con">
     <div class="left">
-      <loginCon v-show="model"></loginCon>
-      <regCon v-show="!model"></regCon>
+      <loginCon v-show="model" :model.sync="model"></loginCon>
+      <regCon v-show="!model" :model.sync="model"></regCon>
     </div>
   </div>
 </template>
@@ -40,7 +40,7 @@
     },
     data() {
       return {
-        model: true // true-> 登录，false-> 注册
+        model: false // true-> 登录，false-> 注册
       };
     },
     methods: {}

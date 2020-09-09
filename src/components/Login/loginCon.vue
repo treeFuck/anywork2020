@@ -97,7 +97,7 @@
       </div>
     </div>
     <div class="btnCon">
-      <div class="toReg">去注册</div>
+      <div class="toReg" @click="toReg">去注册</div>
       <div class="sure" @click="sure">登录</div>
     </div>
   </div>
@@ -108,6 +108,9 @@
 
   export default {
     name: "loginCon",
+    props: {
+      model: Boolean
+    },
     data() {
       return {
         password: "123456",
@@ -119,9 +122,11 @@
       barcodeURL() {
         return `${process.env.VUE_APP_URL}/utils/valcode?${new Date().valueOf()}`
       }
-
     },
     methods: {
+      toReg() {
+        this.$emit('update:model', false)
+      },
       sure() {
         // 请求登录
         let send = {
@@ -138,7 +143,7 @@
             // 登录成功后，存储用户信息
             this.$store.commit('addUserInfo', res.data.data);
             // 跳转页面
-            this.$router.push({name: "index"});
+            // this.$router.push({name: "index"});
           } else {
             this.$Message.warning(res.data.stateInfo)
           }
