@@ -81,8 +81,8 @@
         }
         this.loading = true;
         loginApi.forgetPassWord(send).then(res => {
-          if (res.data.state == 1) {
-            this.loading = false;
+          this.loading = false;
+          if (res.state == 1) {
             this.$Modal.success({
               title: "提交成功",
               content: "请留意邮箱信息通知。",
@@ -91,7 +91,7 @@
               }
             });
           } else {
-            this.$Message.warning(res.data.stateInfo)
+            this.$Message.warning(res.stateInfo)
           }
         })
       },

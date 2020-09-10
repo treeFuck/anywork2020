@@ -78,7 +78,6 @@
           font-size: 1.2em;
         }
       }
-
     }
 
     .btn {
@@ -132,8 +131,7 @@
         regPhone: /^1[3456789]\d{9}$/
       };
     },
-    computed: {
-    },
+    computed: {},
     methods: {
       // 获取上传图片文件
       uploadImg(e) {
@@ -166,36 +164,13 @@
         }
         this.loading = true;
         Promise.all([this.upLoadImg(), this.updateInfo()])
-        .then(res=>{
-          this.loading = false;
-        })
-        // personalApi.updateInfo({
-        //   email: this.email,
-        //   phone: this.phone
-        // })
-        // .then(res=>{
-        //   if(res.state == 1) {
-        //     // 修改用户信息
-        //     this.$store.commit('addUserInfo', res.data);
-        //     // this.formData 不为空，则上传头像
-        //     if(this.formData) {
-        //       personalApi.uploadImg(this.formData)
-        //           .then(res=>{
-        //             this.loading = false;
-        //             console.log(res)
-        //           })
-        //     } else {
-        //       this.loading = false;
-        //     }
-        //   } else {
-        //     this.$Message.warning(res.stateInfo);
-        //   }
-        //
-        //
-        // })
+            .then(res => {
+              this.loading = false;
+            })
       },
+      // 上传图片，返回一个promise对象
       upLoadImg() {
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject) => {
           // 有formData，则有图片要上传
           if (this.formData) {
             personalApi.uploadImg(this.formData)
@@ -212,11 +187,12 @@
           }
         })
       },
+      // 修改邮箱、手机，返回一个promise对象
       updateInfo() {
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject) => {
           let userInfo = this.$store.state.userInfo;
           // 如果邮箱、手机有改动，则请求修改
-          if(this.email != userInfo.email || this.phone != userInfo.phone) {
+          if (this.email != userInfo.email || this.phone != userInfo.phone) {
             personalApi.updateInfo({
               email: this.email,
               phone: this.phone
@@ -259,6 +235,7 @@
     },
     mounted() {
       let userInfo = this.$store.state.userInfo;
+      if (!userInfo) return;
       this.email = userInfo.email;
       this.phone = userInfo.phone;
       this.imgSrc = `${process.env.VUE_APP_URL}${userInfo.imagePath}`

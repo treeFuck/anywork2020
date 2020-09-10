@@ -18,7 +18,6 @@ _Request.interceptors.request.use((config) => {
     if (localStorage.getItem("Authorization")) {
         config.headers['Authorization'] = JSON.parse(localStorage.getItem("Authorization")).value;
     }
-    console.log(config.headers)
     return config
 }, error => {
     //403

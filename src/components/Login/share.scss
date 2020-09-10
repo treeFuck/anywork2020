@@ -55,7 +55,7 @@
   justify-content: space-between;
   margin-top: 1em;
 
-  div {
+  .toReg, .toLogin, .sure {
     height: 2.5em;
     width: 48%;
     line-height: 2.5em;
@@ -63,7 +63,6 @@
     cursor: pointer;
     border-radius: 5px;
   }
-
   .toReg {
     color: #495060;
     border: 1px solid #dddee1;

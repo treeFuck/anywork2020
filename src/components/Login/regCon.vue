@@ -1,4 +1,3 @@
-
 <style scoped lang="scss">
   .regCon {
     width: 100%;
@@ -59,8 +58,8 @@
       </div>
     </div>
     <div class="btnCon">
-      <div class="toLogin" @click="toLogin">去登录</div>
-      <div class="sure" @click="sure">注册</div>
+      <Button class="toLogin" @click="toLogin" :disabled="loading">去登录</Button>
+      <Button class="sure" @click="sure" :loading="loading">注册</Button>
     </div>
   </div>
 </template>
@@ -81,7 +80,7 @@
         password: "",
         surePassword: "",
         valcode: "",
-        mark: 0, // 0 注册学生，1注册教师
+        loading: false,
         regEmail: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/,
         regPhone: /^1[3456789]\d{9}$/
       };
@@ -101,17 +100,29 @@
         let send = {
           password: this.password,
           studentId: this.studentId,
-          valcode: this.valcode
+          email: this.email,
+          phone: this.phone,
+          valcode: 0,
+          mark: 0 // 0 注册学生，1注册教师
         }
         if (!this.judeg()) {
           return;
         }
-        //   loginApi.loginHTTP(send).then(res => {
-        //     if (res.data.state == 1) {
-        //     } else {
-        //       this.$Message.warning(res.data.stateInfo)
-        //     }
-        //   })
+        this.loading = true;
+        loginApi.regHttp(send).then(res => {
+          this.loading = false;
+          if (res.state == 1) {
+            this.$Modal.success({
+              title: "注册成功",
+              content: "点击确定返回登录",
+              onOk: () => {
+                this.toLogin()
+              }
+            });
+          } else {
+            this.$Message.warning(res.stateInfo)
+          }
+        })
       },
       // 校验输入
       judeg() {
@@ -129,7 +140,7 @@
         if (!this.phone.trim()) {
           this.$Message.warning("请输入手机号");
           return false;
-        } else if (!this.regPhone.test(this.email)) {
+        } else if (!this.regPhone.test(this.phone)) {
           this.$Message.warning("手机号格式错误");
           return false;
         }

@@ -9,8 +9,11 @@ export default new Vuex.Store({
   },
   mutations: {
     addUserInfo(state, newVl) {
-      state.userInfo = newVl
+      state.userInfo = newVl;
     },
+    delUserInfo(state) {
+      state.userInfo = null;
+    }
   },
   actions: {
   },
