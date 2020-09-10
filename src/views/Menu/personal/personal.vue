@@ -97,17 +97,17 @@
     <img class="logo" src="../../../assets/images/anywork@2x.png" alt="">
     <div class="touxiang">
       <input type="file" @change="uploadImg">
-      <img src="" alt="">
+      <img :src="imgSrc" alt="">
       <div class="tip">修改头像</div>
     </div>
     <div class="inputCon">
       <div>
         <span>邮箱</span>
-        <input type="text">
+        <input type="text" v-model="email">
       </div>
       <div>
         <span>手机</span>
-        <input type="text">
+        <input type="text" v-model="phone">
       </div>
     </div>
     <Button class="btn" @click="sure" :loading="loading" long>保存</Button>
@@ -115,7 +115,8 @@
 </template>
 
 <script>
-  // import loginApi from "../../share/api/loginApi";
+  import personalApi from "@/share/api/personalApi.js";
+  import utils from "./utils.js";
 
   export default {
     name: "personal",
@@ -124,66 +125,82 @@
       return {
         email: '',
         phone: '',
-        loading: false
+        formData: null,
+        imgSrc: '#',
+        loading: false,
+        regEmail: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/,
+        regPhone: /^1[3456789]\d{9}$/
       };
     },
     computed: {},
     methods: {
       // 获取上传图片文件
       uploadImg(e) {
-        let file = e.target.files;
-        let len = file.length;
-        let formdata = new window.FormData();
-        let fileValue = file[0].name;
-        if (this.judge(file[0].name) !== 'OK') {
+        let file = e.target.files[0];
+        let judgeResult = utils.judgeFile(file.name);
+        if (judgeResult !== 'OK') {
+          this.$Modal.warning({
+            title: "错误提示",
+            content: judgeResult
+          });
           e.target.value = "";
           return;
         } else {
-          formdata.append("file", file[0], file[0].name);
+          this.formData = new window.FormData();
+          this.formData.append("file", file, file.name);
         }
-        console.log(formdata.getAll("file"));
+        console.log(this.formData)
+        utils.getImgSrc(file).then((blobUrl) => {
+          this.imgSrc = blobUrl;
+        });
         e.target.value = "";
       },
-      // 校验img文件
-      judge(fileName) {
-        let AllImgExt = ".png|.jpg|.svg|";
-        var extName = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
-        if (AllImgExt.indexOf(extName + "|") != -1) {
-          return 'OK';
-        }
-        let ErrMsg = `该文件类型不允许上传。请上传${AllImgExt}类型的文件，当前上传的文件有${extName}类型`
-        return this.$Modal.warning({
-          title: "错误提示",
-          content: ErrMsg
-        });
-      },
+      // 确定提交
       sure() {
-        let send = {
-          email: this.email,
-        }
-        if (!this.judeg()) {
+        if (!this.judegInput()) {
           return;
         }
         this.loading = true;
-        setTimeout(() => {
-          this.loading = false;
-          this.$Modal.success({
-            title: "提交成功",
-            content: "请留意邮箱信息通知。",
-            onOk: () => {
-            }
-          });
+        personalApi.updateInfo({
+          email: this.email,
+          phone: this.phone
+        })
+        .then(res=>{
+          console.log(res)
+          console.log(this.formData)
+          if(this.formData) {
+            personalApi.uploadImg(this.formData)
+                .then(res=>{
+              this.loading = false;
+              console.log(res)
+            })
+          } else {
+            this.loading = false;
+          }
 
-        }, 1000)
+        })
+
+
+        // setTimeout(() => {
+        //   this.loading = false;
+        //   this.$Modal.success({
+        //     title: "提交成功",
+        //     content: "请留意邮箱信息通知。",
+        //     onOk: () => {
+        //     }
+        //   });
+        // }, 1000)
         //   loginApi.loginHTTP(send).then(res => {
         //     if (res.data.state == 1) {
         //     } else {
         //       this.$Message.warning(res.data.stateInfo)
         //     }
         //   })
-      },
+      }
+      ,
       // 校验输入
-      judeg() {
+      judegInput() {
+        // 校验邮箱
         if (!this.email.trim()) {
           this.$Message.warning("请输入邮箱");
           return false;
@@ -191,8 +208,23 @@
           this.$Message.warning("邮箱格式错误");
           return false;
         }
+        // 校验手机
+        if (!this.phone.trim()) {
+          this.$Message.warning("请输入手机号");
+          return false;
+        } else if (!this.regPhone.test(this.phone)) {
+          this.$Message.warning("手机号格式错误");
+          return false;
+        }
         return true;
-      },
+      }
+      ,
+    },
+    mounted() {
+      let userInfo = this.$store.state.userInfo
+      this.email = userInfo.email;
+      this.phone = userInfo.phone;
+      this.imgSrc = `${process.env.VUE_APP_URL}${userInfo.imagePath}`
     }
   };
 </script>

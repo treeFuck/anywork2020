@@ -52,4 +52,12 @@ export default class request {
     static postMethods(url, data) {
         return _Request.post(url, JSON.stringify(data))
     }
+
+    static formDateMethods(url, data) {
+        return _Request.post(url, JSON.stringify(data), {
+            headers: {
+                'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryMNmuao1NhjvOLJp6',
+            },
+        })
+    }
 }

@@ -108,7 +108,7 @@
             // 登录成功后，存储用户信息
             this.$store.commit('addUserInfo', res.data);
             // 跳转页面
-            this.$router.push({name: "index"});
+            this.$router.push({name: "menu"});
             // 测试其他接口
             // loginApi.testHTTP().then(res => {
             //   console.log(res)

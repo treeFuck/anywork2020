@@ -28,6 +28,7 @@ const routes = [
   {
     path: '/menu',
     name: 'menu',
+    redirect: '/menu/personal',
     component: () => import('../views/Menu/Menu.vue'),
     children: [
       {

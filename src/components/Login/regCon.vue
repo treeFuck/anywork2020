@@ -82,7 +82,8 @@
         surePassword: "",
         valcode: "",
         mark: 0, // 0 注册学生，1注册教师
-        regEmail: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
+        regEmail: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/,
+        regPhone: /^1[3456789]\d{9}$/
       };
     },
     computed: {
@@ -127,6 +128,9 @@
         }
         if (!this.phone.trim()) {
           this.$Message.warning("请输入手机号");
+          return false;
+        } else if (!this.regPhone.test(this.email)) {
+          this.$Message.warning("手机号格式错误");
           return false;
         }
         if (!this.password.trim()) {
