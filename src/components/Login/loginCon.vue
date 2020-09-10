@@ -1,78 +1,22 @@
 <style scoped lang="scss">
   .loginCon {
     width: 100%;
+    @import './share.scss';
 
-    .title {
-      font-size: 2em;
-      text-align: center;
+    .studentId .logo {
+      background-image: url("../../assets/images/account@3x.png");
+    }
+
+    .password .logo {
+      background-image: url("../../assets/images/lock@3x.png");
+    }
+
+    .forgetPass {
+      height: 2em;
+      line-height: 3em;
+      cursor: pointer;
       color: #548cfe;
-    }
-
-    .inputCon {
-      color: #495060;
-
-      .input {
-        display: flex;
-        align-items: center;
-        margin: 0.5em 0;
-        border-bottom: 1px solid #548cfe;
-
-        img {
-          height: 1.3em;
-        }
-
-        input {
-          width: 100%;
-          height: 3em;
-          line-height: 3em;
-          font-size: 13px;
-          border: none;
-          outline: none;
-          text-indent: 1em;
-          background: #fff;
-        }
-      }
-
-      .barcode {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .barcodeImg {
-          width: 48%;
-        }
-
-        .input {
-          width: 48%;
-        }
-      }
-    }
-
-    .btnCon {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 1em;
-
-      div {
-        height: 2.5em;
-        width: 48%;
-        line-height: 2.5em;
-        text-align: center;
-        cursor: pointer;
-        border-radius: 5px;
-      }
-
-      .toReg {
-        color: #495060;
-        border: 1px solid #dddee1;
-        background-color: #f7f7f7;
-      }
-
-      .sure {
-        color: #fff;
-        border: 1px solid #fff;
-        background-color: #7f3ffd;
-      }
+      text-align: right;
     }
   }
 </style>
@@ -81,23 +25,24 @@
   <div class="loginCon">
     <div class="title">登录</div>
     <div class="inputCon">
-      <div class="input">
-        <img src="../../assets/images/account@3x.png"/>
+      <div class="input studentId">
+        <div class="logo"></div>
         <input type="text" v-model="studentId" placeholder="学号"/>
       </div>
-      <div class="input">
-        <img src="../../assets/images/lock@3x.png"/>
+      <div class="input password">
+        <div class="logo"></div>
         <input type="password" v-model="password" placeholder="密码"/>
       </div>
       <div class="barcode">
         <img class="barcodeImg" :src="barcodeURL" alt="">
         <div class="input">
-          <input type="password" v-model="valcode" placeholder="验证码"/>
+          <input type="text" v-model="valcode" placeholder="验证码"/>
         </div>
       </div>
     </div>
+    <div class="forgetPass" @click="forgetPass">忘记密码 ？</div>
     <div class="btnCon">
-      <div class="toReg">去注册</div>
+      <div class="toReg" @click="toReg">去注册</div>
       <div class="sure" @click="sure">登录</div>
     </div>
   </div>
@@ -108,39 +53,68 @@
 
   export default {
     name: "loginCon",
+    props: {
+      model: Boolean
+    },
     data() {
       return {
-        password: "123456",
         studentId: "3118004972",
-        valcode: "",
+        password: "123456",
+        valcode: "1",
       };
     },
     computed: {
       barcodeURL() {
         return `${process.env.VUE_APP_URL}/utils/valcode?${new Date().valueOf()}`
       }
-
     },
     methods: {
+      // 切换到注册
+      toReg() {
+        this.$emit('update:model', false)
+      },
+      forgetPass() {
+        this.$emit('forgetPassShow')
+      },
+      // 校验输入
+      judeg() {
+        if (!this.studentId.trim()) {
+          this.$Message.warning("请输入学号");
+          return false;
+        }
+        if (!this.password.trim()) {
+          this.$Message.warning("请输入密码");
+          return false;
+        }
+        if (!this.valcode.trim()) {
+          this.$Message.warning("请输入验证码");
+          return false;
+        }
+        return true;
+      },
+      // 请求登录
       sure() {
-        // 请求登录
         let send = {
           password: this.password,
           studentId: this.studentId,
           valcode: this.valcode
         }
-        if(!this.valcode) {
-          this.$Message.warning("请输入验证码");
+        if (!this.judeg()) {
           return;
         }
         loginApi.loginHTTP(send).then(res => {
-          if (res.data.state == 1) {
+          console.log(res)
+          if (res.state == 1) {
             // 登录成功后，存储用户信息
-            this.$store.commit('addUserInfo', res.data.data);
+            this.$store.commit('addUserInfo', res.data);
             // 跳转页面
-            this.$router.push({name: "index"});
+            this.$router.push({name: "menu"});
+            // 测试其他接口
+            // loginApi.testHTTP().then(res => {
+            //   console.log(res)
+            // })
           } else {
-            this.$Message.warning(res.data.stateInfo)
+            this.$Message.warning(res.stateInfo)
           }
         })
       }

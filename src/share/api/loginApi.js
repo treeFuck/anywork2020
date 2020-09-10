@@ -13,4 +13,9 @@ export default class ExerciseApi extends request {
   static loginHTTP (data) {
     return this.postMethods('/user/login', data)
   }
+
+  //测试
+  static testHTTP () {
+    return this.postMethods('/organization/search', {organizationName: ""})
+  }
 }
