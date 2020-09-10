@@ -1,8 +1,12 @@
 // 校验img文件
-let judgeFile = (fileName) => {
+let judgeFile = (file) => {
+  let fileName = file.name;
   let AllImgExt = ".png|.jpg|.svg|";
   let extName = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
   if (AllImgExt.indexOf(extName + "|") != -1) {
+    if(file.size > 1056784) {
+      return '图片过大，无法上传！'
+    }
     return 'OK';
   }
   return `该文件类型不允许上传。请上传${AllImgExt}类型的文件，当前上传的文件有${extName}类型`;

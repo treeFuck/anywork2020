@@ -15,7 +15,8 @@
       padding: 1.5em;
       width: 25em;
       transform: translate(-50%, -50%);
-      background-color: #000;
+      background-color: #383838;
+      box-shadow: 0 0 8px 2px #585858;
       border-radius: 10px;
 
       .input {
@@ -79,23 +80,20 @@
           return;
         }
         this.loading = true;
-        setTimeout(() => {
-          this.loading = false;
-          this.$Modal.success({
-            title: "提交成功",
-            content: "请留意邮箱信息通知。",
-            onOk: () => {
-              this.backLogin()
-            }
-          });
-
-        }, 1000)
-        //   loginApi.loginHTTP(send).then(res => {
-        //     if (res.data.state == 1) {
-        //     } else {
-        //       this.$Message.warning(res.data.stateInfo)
-        //     }
-        //   })
+        loginApi.forgetPassWord(send).then(res => {
+          if (res.data.state == 1) {
+            this.loading = false;
+            this.$Modal.success({
+              title: "提交成功",
+              content: "请留意邮箱信息通知。",
+              onOk: () => {
+                this.backLogin()
+              }
+            });
+          } else {
+            this.$Message.warning(res.data.stateInfo)
+          }
+        })
       },
       // 校验输入
       judeg() {

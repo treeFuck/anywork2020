@@ -14,8 +14,8 @@ export default class ExerciseApi extends request {
     return this.postMethods('/user/login', data)
   }
 
-  //测试
-  static testHTTP () {
-    return this.postMethods('/organization/search', {organizationName: ""})
+  // 忘记密码
+  static forgetPassWord () {
+    return this.postMethods('/user/forget', {organizationName: ""})
   }
 }

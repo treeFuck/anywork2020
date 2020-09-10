@@ -54,9 +54,9 @@ export default class request {
     }
 
     static formDateMethods(url, data) {
-        return _Request.post(url, JSON.stringify(data), {
+        return _Request.post(url, data, {
             headers: {
-                'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryMNmuao1NhjvOLJp6',
+                'Content-Type': 'multipart/form-data',
             },
         })
     }
