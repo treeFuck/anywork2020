@@ -44,8 +44,6 @@
     <div class="btnCon">
       <Button class="toReg" @click="toReg" :disabled="loading">去注册</Button>
       <Button class="sure" @click="sure" :loading="loading">登录</Button>
-<!--      <div class="toReg" @click="toReg">去注册</div>-->
-<!--      <div class="sure" @click="sure">登录</div>-->
     </div>
   </div>
 </template>
