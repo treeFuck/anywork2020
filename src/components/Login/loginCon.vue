@@ -42,8 +42,10 @@
     </div>
     <div class="forgetPass" @click="forgetPass">忘记密码 ？</div>
     <div class="btnCon">
-      <div class="toReg" @click="toReg">去注册</div>
-      <div class="sure" @click="sure">登录</div>
+      <Button class="toReg" @click="toReg" :disabled="loading">去注册</Button>
+      <Button class="sure" @click="sure" :loading="loading">登录</Button>
+<!--      <div class="toReg" @click="toReg">去注册</div>-->
+<!--      <div class="sure" @click="sure">登录</div>-->
     </div>
   </div>
 </template>
@@ -58,9 +60,10 @@
     },
     data() {
       return {
-        studentId: "3118004972",
+        studentId: "3118004971",
         password: "123456",
         valcode: "1",
+        loading: false
       };
     },
     computed: {
@@ -102,17 +105,14 @@
         if (!this.judeg()) {
           return;
         }
+        this.loading = true;
         loginApi.loginHTTP(send).then(res => {
-          console.log(res)
+          this.loading = false;
           if (res.state == 1) {
             // 登录成功后，存储用户信息
             this.$store.commit('addUserInfo', res.data);
             // 跳转页面
-            this.$router.push({name: "menu"});
-            // 测试其他接口
-            // loginApi.testHTTP().then(res => {
-            //   console.log(res)
-            // })
+            this.$router.replace({name: "index"});
           } else {
             this.$Message.warning(res.stateInfo)
           }

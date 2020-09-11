@@ -78,7 +78,6 @@
           font-size: 1.2em;
         }
       }
-
     }
 
     .btn {
@@ -137,7 +136,8 @@
       // 获取上传图片文件
       uploadImg(e) {
         let file = e.target.files[0];
-        let judgeResult = utils.judgeFile(file.name);
+        // 校验文件大小、类型
+        let judgeResult = utils.judgeFile(file);
         if (judgeResult !== 'OK') {
           this.$Modal.warning({
             title: "错误提示",
@@ -146,13 +146,15 @@
           e.target.value = "";
           return;
         } else {
+          // 校验成功，放入formdata
           this.formData = new window.FormData();
           this.formData.append("file", file, file.name);
         }
-        console.log(this.formData)
+        // 获取图片文件的bloburl
         utils.getImgSrc(file).then((blobUrl) => {
           this.imgSrc = blobUrl;
         });
+        // 清空input
         e.target.value = "";
       },
       // 确定提交
@@ -161,43 +163,54 @@
           return;
         }
         this.loading = true;
-        personalApi.updateInfo({
-          email: this.email,
-          phone: this.phone
-        })
-        .then(res=>{
-          console.log(res)
-          console.log(this.formData)
-          if(this.formData) {
-            personalApi.uploadImg(this.formData)
-                .then(res=>{
+        Promise.all([this.upLoadImg(), this.updateInfo()])
+            .then(res => {
               this.loading = false;
-              console.log(res)
+            })
+      },
+      // 上传图片，返回一个promise对象
+      upLoadImg() {
+        return new Promise((resolve, reject) => {
+          // 有formData，则有图片要上传
+          if (this.formData) {
+            personalApi.uploadImg(this.formData)
+                .then(res => {
+                  if (res.state == 1) {
+                    this.$Message.success(res.stateInfo);
+                  } else {
+                    this.$Message.warning(res.stateInfo);
+                  }
+                  resolve()
+                })
+          } else {
+            resolve()
+          }
+        })
+      },
+      // 修改邮箱、手机，返回一个promise对象
+      updateInfo() {
+        return new Promise((resolve, reject) => {
+          let userInfo = this.$store.state.userInfo;
+          // 如果邮箱、手机有改动，则请求修改
+          if (this.email != userInfo.email || this.phone != userInfo.phone) {
+            personalApi.updateInfo({
+              email: this.email,
+              phone: this.phone
+            }).then(res => {
+              if (res.state == 1) {
+                // 修改用户信息
+                this.$store.commit('addUserInfo', res.data);
+                this.$Message.success(res.stateInfo);
+              } else {
+                this.$Message.warning(res.stateInfo);
+              }
+              resolve()
             })
           } else {
-            this.loading = false;
+            resolve()
           }
-
         })
-
-
-        // setTimeout(() => {
-        //   this.loading = false;
-        //   this.$Modal.success({
-        //     title: "提交成功",
-        //     content: "请留意邮箱信息通知。",
-        //     onOk: () => {
-        //     }
-        //   });
-        // }, 1000)
-        //   loginApi.loginHTTP(send).then(res => {
-        //     if (res.data.state == 1) {
-        //     } else {
-        //       this.$Message.warning(res.data.stateInfo)
-        //     }
-        //   })
-      }
-      ,
+      },
       // 校验输入
       judegInput() {
         // 校验邮箱
@@ -221,7 +234,8 @@
       ,
     },
     mounted() {
-      let userInfo = this.$store.state.userInfo
+      let userInfo = this.$store.state.userInfo;
+      if (!userInfo) return;
       this.email = userInfo.email;
       this.phone = userInfo.phone;
       this.imgSrc = `${process.env.VUE_APP_URL}${userInfo.imagePath}`

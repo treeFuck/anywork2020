@@ -16,7 +16,6 @@ _Request.interceptors.request.use((config) => {
     if (localStorage.getItem("Authorization")) {
         config.headers['Authorization'] = JSON.parse(localStorage.getItem("Authorization")).value;
     }
-    console.log(config.headers)
     return config
 }, error => {
     //403
@@ -52,9 +51,9 @@ export default class request {
     }
 
     static formDateMethods(url, data) {
-        return _Request.post(url, JSON.stringify(data), {
+        return _Request.post(url, data, {
             headers: {
-                'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryMNmuao1NhjvOLJp6',
+                'Content-Type': 'multipart/form-data',
             },
         })
     }

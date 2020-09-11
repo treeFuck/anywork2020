@@ -21,25 +21,24 @@
 
 <template>
   <div class="menuCon">
-    菜单
     <router-view class="router-view"/>
   </div>
 </template>
 
 <script>
-  // import loginApi from "../../share/api/loginApi";
 
   export default {
     name:"Menu",
-    props: {
-    },
-    data() {
-      return {
-      };
-    },
-    computed: {
-
-    },
-    methods: {}
+    mounted() {
+      if (!this.$store.state.userInfo) {
+        this.$Modal.warning({
+          title: "请先登录",
+          content: "您还没有登录，点击确定返回登录",
+          onOk: () => {
+            this.$router.replace({name: "login"});
+          }
+        });
+      }
+    }
   };
 </script>
