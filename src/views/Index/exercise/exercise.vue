@@ -80,7 +80,6 @@
             //页面渲染的时候请求习题
             getExerciseData() {
                 exerciseApi.getExerciseContent({"testpaperId": "27", "choice": "0"}).then((res) => {
-                    console.log(res)
                     this.viewRender(this.dataControl(res.data.data))
                 })
             },
@@ -102,10 +101,8 @@
                 this.reFormatExerciseContent(requestData.studentAnswer)
 
                 exerciseApi.submitAnswerData(requestData, (res) => {
-                    console.log(res)
                 })
 
-                console.log(requestData)
             },
 
             //遍历练习数组，整理用户填写的答案整理为后端数据发送格式
