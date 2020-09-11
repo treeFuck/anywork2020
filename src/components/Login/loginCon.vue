@@ -104,13 +104,14 @@
           return;
         }
         this.loading = true;
+
         loginApi.loginHTTP(send).then(res => {
           this.loading = false;
           if (res.state == 1) {
             // 登录成功后，存储用户信息
             this.$store.commit('addUserInfo', res.data);
             // 跳转页面
-            this.$router.replace({name: "index"});
+            this.$router.replace({name: "exercise"});
           } else {
             this.$Message.warning(res.stateInfo)
           }
