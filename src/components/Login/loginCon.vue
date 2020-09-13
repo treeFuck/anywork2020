@@ -61,7 +61,8 @@
         studentId: "3118004971",
         password: "123456",
         valcode: "1",
-        loading: false
+        loading: false,
+        
       };
     },
     computed: {
@@ -98,7 +99,8 @@
         let send = {
           password: this.password,
           studentId: this.studentId,
-          valcode: this.valcode
+          valcode: this.valcode,
+          isTeacher: 0
         }
         if (!this.judeg()) {
           return;
