@@ -113,7 +113,7 @@
             // 登录成功后，存储用户信息
             this.$store.commit('addUserInfo', res.data);
             // 跳转页面
-            this.$router.replace({name: "exercise"});
+            this.$router.replace({name: "index"});
           } else {
             this.$Message.warning(res.stateInfo)
           }
