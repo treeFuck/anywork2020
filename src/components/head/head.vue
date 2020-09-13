@@ -102,13 +102,14 @@
       selectTo(e){
           if(e.target){
               if(e.target.innerText === "个人主页"){
-              this.$router.push({name:'personal'});
+                this.$router.push({name:'personal'});
               }else if(e.target.innerText === "修改密码"){
-              this.$router.push({name:'newPassword'});
+                this.$router.push({name:'newPassword'});
               }else if(e.target.innerText === "退出登录"){
-              indexApi.userExit().then(res => {
+                indexApi.userExit().then(res => {
                   console.log(res, "请求结果：退出登录") 
-              })
+                  this.$router.push({name:'login'});
+                })
               }
           }
       },
