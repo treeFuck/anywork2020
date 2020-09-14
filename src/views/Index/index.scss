@@ -1,0 +1,15 @@
+/*主页面*/
+.big-container {
+  position: relative;
+  width: 100%;
+  font-size: 12px;
+  overflow: hidden;
+
+  /*主容器*/
+  .main-container {
+    position: relative;
+    width: 74%;
+    padding: 110px 0;
+    margin: 0 auto;
+  }
+}
