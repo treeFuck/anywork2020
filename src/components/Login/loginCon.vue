@@ -44,8 +44,6 @@
     <div class="btnCon">
       <Button class="toReg" @click="toReg" :disabled="loading">去注册</Button>
       <Button class="sure" @click="sure" :loading="loading">登录</Button>
-<!--      <div class="toReg" @click="toReg">去注册</div>-->
-<!--      <div class="sure" @click="sure">登录</div>-->
     </div>
   </div>
 </template>
@@ -63,7 +61,8 @@
         studentId: "3118004971",
         password: "123456",
         valcode: "1",
-        loading: false
+        loading: false,
+        
       };
     },
     computed: {
@@ -100,19 +99,21 @@
         let send = {
           password: this.password,
           studentId: this.studentId,
-          valcode: this.valcode
+          valcode: this.valcode,
+          isTeacher: 0
         }
         if (!this.judeg()) {
           return;
         }
         this.loading = true;
+
         loginApi.loginHTTP(send).then(res => {
           this.loading = false;
           if (res.state == 1) {
             // 登录成功后，存储用户信息
             this.$store.commit('addUserInfo', res.data);
             // 跳转页面
-            this.$router.replace({name: "index"});
+            this.$router.replace({name: "exercise"});
           } else {
             this.$Message.warning(res.stateInfo)
           }
