@@ -33,6 +33,11 @@
   .header-right-container {
     @include header-share;
     float: right;
+    line-height: $headerHeight;
+    font: {
+      size: 2rem;
+      weight: bold;
+    };
 
     img {
       height: $headerHeight;

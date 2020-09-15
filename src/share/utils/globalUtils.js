@@ -7,11 +7,14 @@
  */
 export function formatDate(currentDate) {
     //参数大小校验，如果得到的描述>10，则直接返回，如果<10的话则变为0*的格式返回
+    let year = verifyDateFormat(currentDate.getFullYear())
+    let month = verifyDateFormat(currentDate.getMonth() + 1)
+    let day = verifyDateFormat(currentDate.getDate())
     let hours = verifyDateFormat(currentDate.getHours())
     let minutes = verifyDateFormat(currentDate.getMinutes())
     let seconds = verifyDateFormat(currentDate.getSeconds())
 
-    return `${hours}:${minutes}:${seconds}`
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }
 
 export function verifyDateFormat(value) {
@@ -21,4 +24,10 @@ export function verifyDateFormat(value) {
 //获取当前时间，并转变为yyyy-MM-dd的格式
 export function getCurrentDate() {
     return formatDate(new Date())
+}
+
+
+//取出填空的所有空白字符
+export function removeSpace(str) {
+    return str.replace(/\s*/g,"")
 }
