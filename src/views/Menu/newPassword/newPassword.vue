@@ -123,7 +123,7 @@
                 content: "密码修改成功，请重新登录",
                 onOk: () => {
                   // 清空 vuex 的用户信息
-                  this.$store.commit("delUserInfo");
+                  window.sessionStorage.removeItem("anyworkUserInfo");
                   // 返回登录页面
                   this.$router.replace({name: "login"});
                 }
