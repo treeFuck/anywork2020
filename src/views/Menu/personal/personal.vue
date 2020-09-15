@@ -190,7 +190,7 @@
       // 修改邮箱、手机，返回一个promise对象
       updateInfo() {
         return new Promise((resolve, reject) => {
-          let userInfo = this.$store.state.userInfo;
+          let userInfo = JSON.parse(window.sessionStorage.getItem('anyworkUserInfo'));
           // 如果邮箱、手机有改动，则请求修改
           if (this.email != userInfo.email || this.phone != userInfo.phone) {
             personalApi.updateInfo({
@@ -199,7 +199,7 @@
             }).then(res => {
               if (res.state == 1) {
                 // 修改用户信息
-                this.$store.commit('addUserInfo', res.data);
+                window.sessionStorage.setItem('anyworkUserInfo', JSON.stringify(res.data))
                 this.$Message.success(res.stateInfo);
               } else {
                 this.$Message.warning(res.stateInfo);
@@ -234,7 +234,7 @@
       ,
     },
     mounted() {
-      let userInfo = this.$store.state.userInfo;
+      let userInfo = JSON.parse(window.sessionStorage.getItem('anyworkUserInfo'));
       if (!userInfo) return;
       this.email = userInfo.email;
       this.phone = userInfo.phone;
