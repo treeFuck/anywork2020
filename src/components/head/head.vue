@@ -107,7 +107,7 @@
                 this.$router.push({name:'newPassword'});
               }else if(e.target.innerText === "退出登录"){
                 indexApi.userExit().then(res => {
-                  console.log(res, "请求结果：退出登录") 
+                  console.log(res, "请求结果：退出登录");
                   this.$router.push({name:'login'});
                 })
               }
@@ -124,6 +124,21 @@
           this.userInfo.imagePath = "http://qgailab.com/anywork" + this.userInfo.imagePath;
         })
       },
+
+      /**
+       * 清除所有cookie
+       */
+      // delAllCookie(){    
+      //   var myDate=new Date();    
+      //   myDate.setTime(-1000);//设置时间    
+      //   var data=document.cookie;    
+      //   var dataArray=data.split("; ");    
+      //   console.log(dataArray)
+      //   for(var i=0;i<dataArray.length;i++){    
+      //     var varName=dataArray[i].split("=");    
+      //     document.cookie=""+"=''; expires="+myDate.toGMTString();    
+      //   }    
+      // }
     },
 
     mounted(){

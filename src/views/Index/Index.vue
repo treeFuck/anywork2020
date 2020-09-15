@@ -336,7 +336,7 @@ export default {
       }
       this.$router.push({
         name: "organizationPage",
-        params: { organizationId: this.organizationId, mode: this.mode }
+        query: { organizationId: this.organizationId, mode: this.mode }
       });
     },
 

@@ -111,7 +111,7 @@ $fontColor: #548cfe;
           <div class="test-card" v-for="(item, index) in chapterList" :key="index">
             <div
               class="section-title"
-              @click.self="displayDetail($event, item)"
+              @click="displayDetail($event, item)"
               :data-chapterid="item.chapterId"
             >
               <div class="section-title-left">
@@ -125,8 +125,9 @@ $fontColor: #548cfe;
                 class="section-test"
                 v-for="(testItem, testIndex) in item.testList"
                 :key="(testIndex)"
-                @click.self="toExercise($event)"
+                @click="toExercise($event)"
                 :data-paperid="testItem.testpaperId"
+                :data-status="testItem.status"
               >
                 <div class="section-test-left">
                   <div
@@ -166,7 +167,6 @@ export default {
     return {
       title: "课前预习",
       displaySel: false,
-      displayDet: false,
       organizationId: 0,
       chapterId: 0,
       testPaperType: 2,
@@ -179,13 +179,13 @@ export default {
   methods: {
     displayDetail(e, item) {
       console.log(e);
-      this.chapterId = parseInt(e.target.dataset.chapterid);
+      this.chapterId = parseInt(e.currentTarget.dataset.chapterid);
       this.requestTestList(this.chapterId);
     },
 
     toExercise(e) {
-      console.log(e.target.dataset.paperid);
-      this.$router.push({name:'exercise', params: {testpaperId: e.target.dataset.paperid}});
+      console.log(e.currentTarget.dataset.status);
+      this.$router.push({name:'exercise', query: {testpaperId: e.currentTarget.dataset.paperid, mode: this.mode, paperStatus: e.currentTarget.dataset.status}});
     },
     /**
      * 获取章节列表
@@ -201,7 +201,7 @@ export default {
         let that = this;
         this.chapterList.forEach(function(item, index) {
           that.$set(item, "testList", {});
-          that.$set(item, "display", flase);
+          that.$set(item, "display", false);
         });
       });
     },
@@ -212,9 +212,9 @@ export default {
     requestTestList(chapterId) {
       console.log(chapterId);
       let data = {
-        organizationId: this.organizationId, // int
-        chapter: chapterId, // int，如果是请求考试，这个字段为0
-        testPaperType: this.mode // int，1是考试，2是预习题，3是课后复习题
+        organizationId: parseInt(this.organizationId), // int
+        chapter: parseInt(chapterId), // int，如果是请求考试，这个字段为0
+        testPaperType: parseInt(this.mode) // int，1是考试，2是预习题，3是课后复习题
       };
 
       OrganizationApi.getTestList(data).then(res => {
@@ -250,8 +250,8 @@ export default {
   },
   mounted() {
     let that = this;
-    this.organizationId = this.$route.params.organizationId;
-    this.mode = this.$route.params.mode;
+    this.organizationId = this.$route.query.organizationId;
+    this.mode = this.$route.query.mode;
     if(this.mode == 1) {
       this.title = "课程考试"
     }else if(this.mode == 2) {
