@@ -31,6 +31,11 @@ const routes = [
     component: () => import ("../views/Index/exercise/exercise")
   },
   {
+    path: '/wrongQuestions',
+    name: 'wrongQuestions',
+    component: () => import ("../views/Index/wrongQuestions/wrongQuestions")
+  },
+  {
     path: '/menu',
     name: 'menu',
     redirect: '/menu/personal',

@@ -333,6 +333,11 @@ export default {
         /**
          * 跳转到错题
          */
+        this.$router.push({
+          name: "wrongQuestions"
+          // params: { organizationId: this.organizationId }
+        });
+        return ;
       }
       this.$router.push({
         name: "organizationPage",
