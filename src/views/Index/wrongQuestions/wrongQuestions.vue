@@ -4,7 +4,7 @@
       <div class="main-container">
         <Indexheader></Indexheader>
         <div class="title">
-          <img src="../../../assets/images/preview@1x.png" alt="eyes">
+          <img src="../../../assets/images/exam@1x.png" alt="problems">
           <div class="title-context">错题收藏</div>
         </div>
 
