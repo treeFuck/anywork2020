@@ -1,15 +1,23 @@
 $color: #548cfe;
+@import "../../../share/cssMixin/cssMixin";
 
 .exercise-content-container {
   $exerciseNumberHeight: 2rem;
-  margin: 2rem 0 2rem 0;
+  margin: 2rem 0 0 0;
+  border-bottom: 1px solid #e4dddd;
+  padding-bottom: 2rem;
 
   .exercise-content-number {
+    @include flex-left-layout;
     height: $exerciseNumberHeight;
     line-height: $exerciseNumberHeight;
     color: $color;
     font: {
       size: 1.3rem;
+    }
+
+    p {
+      margin-right: 1rem;
     }
   }
 
@@ -21,6 +29,12 @@ $color: #548cfe;
     font: {
       size: 1.2rem;
     }
+  }
+
+  .analysis-con {
+    $analysis: 2rem;
+    height: $analysis;
+    font-size: 1rem;
   }
 }
 
@@ -71,6 +85,7 @@ $rowHeight: 1.5rem;
     font-size: 1.3em;
     color: #548cfe;
     margin-right: 1.5rem;
+    margin-bottom: 1rem;
   }
 }
 

@@ -62,7 +62,7 @@
         password: "123456",
         valcode: "1",
         loading: false,
-        
+
       };
     },
     computed: {
@@ -111,7 +111,7 @@
           this.loading = false;
           if (res.state == 1) {
             // 登录成功后，存储用户信息
-            this.$store.commit('addUserInfo', res.data);
+            window.sessionStorage.setItem('anyworkUserInfo', JSON.stringify(res.data))
             // 跳转页面
             this.$router.replace({name: "index"});
           } else {

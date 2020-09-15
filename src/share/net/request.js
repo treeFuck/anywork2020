@@ -1,6 +1,4 @@
 import axios from 'axios';
-import {responseIntercept} from "./response";
-
 
 //创建axios请求实例，所有的请求操作get,post等方法通过这里发出
 const _Request = axios.create({

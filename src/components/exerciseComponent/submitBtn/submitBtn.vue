@@ -4,6 +4,7 @@
     $heightBtn: 2rem;
 
     .btn-container {
+        margin-top: 2rem;
         height: $heightBtn;
         width: 100%;
     }

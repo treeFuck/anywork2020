@@ -18,4 +18,19 @@ export default class ExerciseApi extends request {
     static submitAnswerData(data) {
         return this.postMethods('test/submit', data)
     }
+
+    //获取用户做题的情况
+    static getDoneDetails(data) {
+        return this.postMethods('test/done/detail', data)
+    }
+
+    //收藏习题
+    static collectExercise(data) {
+        return this.postMethods('quest/collect', data)
+    }
+
+    //取消收藏
+    static deleteCollect(data) {
+        return this.postMethods('quest/collect/delete', data)
+    }
 }

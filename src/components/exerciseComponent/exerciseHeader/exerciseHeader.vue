@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="header-right-container">
-            <img src="../../../assets/images_ysy/anywork@3x.png"/>
+            <p>总成绩: {{user_score.score}}分</p>
         </div>
     </div>
 </template>
@@ -24,6 +24,15 @@
         props: {
             headerTitle: {
                 type: String
+            },
+            score: {
+                type: String | Number
+            }
+        },
+
+        data() {
+            return {
+                user_score: this.score
             }
         }
 

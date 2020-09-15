@@ -1,8 +1,11 @@
 <template>
     <div class="exercise-content-container">
         <div class="exercise-content-number">
-            {{exeNumber}}. ({{exeType}})
+            <p>{{exeNumber}}. ({{exeType}})</p>
+            <Icon :type="isStar.star ? 'ios-star' : 'ios-star-outline'" size="20" style="cursor: pointer"
+                  color="#f5a623" @click="collect"/>
         </div>
+
         <pre class="exercise-content-details">
             {{exerciseDetails}}
         </pre>
@@ -28,11 +31,23 @@
                 </input>
             </div>
         </div>
+        <div v-if="!analysisRes.isTrue">
+            <div class="analysis-con" style="color: red">解析:你的答案是错误的。你填写的答案为: {{analysisRes.userAns}}</div>
+            <div class="analysis-con">{{analysisRes.analysis}}</div>
+        </div>
     </div>
 </template>
 
 <script>
+    import {Icon, Message} from 'view-design'
+    import exerciseApi from "../../../share/api/exerciseApi";
+
     export default {
+        components: {
+            Icon,
+            Message
+        },
+
         name: "exerciseContent",
 
         props: {
@@ -40,21 +55,14 @@
                 type: Number
             },
             //如果是填空题的话，这个字段表示填空的数量，用于动态显示若干个输入框
-            fillNumber: {
-                type: Array
-            },
-            type: {
-                type: Number
-            },
-            content: {
-                type: String,
-            },
-            id: {
-                type: Number
-            },
-            ansList: {
-                type: Array
-            },
+            fillNumber: {type: Array},
+            type: {type: Number},
+            content: {type: String,},
+            id: {type: Number},
+            ansList: {type: Array},
+            analysis: {type: Object},
+            isFinish: {type: Boolean, default: false},
+            star: {type: Object, default: false}
         },
 
         data() {
@@ -68,7 +76,13 @@
                 //题目类型，单选，判断，填空
                 exeType: null,
                 //存储学生回答情况数组
-                studentAnswerList: new Map()
+                studentAnswerList: new Map(),
+                //学生是否已经作答
+                finish: this.isFinish,
+                //解析显示
+                analysisRes: this.analysis,
+                //是否收藏
+                isStar: this.star
             }
         },
 
@@ -103,7 +117,7 @@
             },
 
             //根据vocabulary判断是显示英文还是显示钩和叉
-            showCorrectCircle (value) {
+            showCorrectCircle(value) {
                 if (value == 1) {
                     return '✔'
                 } else if (value == 0) {
@@ -112,6 +126,20 @@
                 return value
             },
 
+            //点击星收藏
+            collect() {
+                this.isStar.star = !this.isStar.star
+
+                let API = this.isStar.star ? 'collectExercise' : 'deleteCollect'
+
+                exerciseApi[API]({questionId: this.id}).then(({state, stateInfo}) => {
+                    if (state == 1) {
+                        Message.success('收藏成功')
+                    } else {
+                        Message.error(stateInfo)
+                    }
+                })
+            }
         }
 
     }

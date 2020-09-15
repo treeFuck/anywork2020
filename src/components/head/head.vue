@@ -107,7 +107,8 @@
                 this.$router.push({name:'newPassword'});
               }else if(e.target.innerText === "退出登录"){
                 indexApi.userExit().then(res => {
-                  console.log(res, "请求结果：退出登录");
+                  localStorage.removeItem('Authorization')
+                  console.log(res, "请求结果：退出登录") 
                   this.$router.push({name:'login'});
                 })
               }

@@ -7,6 +7,13 @@
   align-items: center;
 }
 
+//flex mixin
+@mixin flex-left-layout {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
 //div文字垂直水平居中mixin
 @mixin text-align-center($lineHeight) {
   text-align: center;

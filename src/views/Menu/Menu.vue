@@ -30,15 +30,6 @@
   export default {
     name:"Menu",
     mounted() {
-      if (!this.$store.state.userInfo) {
-        this.$Modal.warning({
-          title: "请先登录",
-          content: "您还没有登录，点击确定返回登录",
-          onOk: () => {
-            this.$router.replace({name: "login"});
-          }
-        });
-      }
     }
   };
 </script>
