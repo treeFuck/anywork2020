@@ -91,6 +91,7 @@
 
 <script>
   import personalApi from "../../../share/api/personalApi.js";
+  import indexApi from "../../../share/api/indexApi";
 
   export default {
     name: "newPassword",
@@ -113,21 +114,22 @@
           newPassword: this.newPassword
         }
         this.loading = true;
-        personalApi.changePassword(send).then(res=>{
+        personalApi.changePassword(send).then(res => {
           this.loading = false;
           if (res.state == 1) {
-            this.$Modal.success({
-              title: "修改成功",
-              content: "密码修改成功，请重新登录",
-              onOk: () => {
-                // 清空 vuex 的用户信息
-                this.$store.commit("delUserInfo");
-                // 返回登录页面
-                this.$router.replace({name: "login"});
-              }
-            });
-          }
-          else {
+            indexApi.userExit().then(res => {
+              this.$Modal.success({
+                title: "修改成功",
+                content: "密码修改成功，请重新登录",
+                onOk: () => {
+                  // 清空 vuex 的用户信息
+                  window.sessionStorage.removeItem("anyworkUserInfo");
+                  // 返回登录页面
+                  this.$router.replace({name: "login"});
+                }
+              });
+            })
+          } else {
             this.$Message.warning(res.stateInfo);
           }
         })
