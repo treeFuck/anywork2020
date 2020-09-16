@@ -7,8 +7,9 @@
         <calculagrapha></calculagrapha>
         <div class="header-component-container">
             <exerciseHeader
-                    :headerTitle="'课前预习'"
+                    :headerTitle="title"
                     :score="score"
+                    :show="finishStatus"
             ></exerciseHeader>
         </div>
         <div class="exercise-content-container">
@@ -24,12 +25,14 @@
                         :ansList="item.ansList"
                         :type="item.type"
                         :star="item.isStar"
+                        :ban="finishStatus"
                 >
                 </exerciseContent>
             </div>
         </div>
         <div>
             <submitBtn
+                    v-if="!finishStatus"
                     @submit="confirmSubmitData"
             ></submitBtn>
         </div>
@@ -40,7 +43,7 @@
     import exerciseHeader from "../../../components/exerciseComponent/exerciseHeader/exerciseHeader";
     import exerciseContent from "../../../components/exerciseComponent/exerciseContent/exerciseContent";
     import exerciseApi from "../../../share/api/exerciseApi";
-    import {reFormatData} from "./utils";
+    import {judgeMode, judgeStatus, reFormatData} from "./utils";
     import calculagrapha from "../../../components/exerciseComponent/calculagraph/calculagraph";
     import submitBtn from "../../../components/exerciseComponent/submitBtn/submitBtn";
     import * as globalUtils from '../../../share/utils/globalUtils'
@@ -52,6 +55,9 @@
 
         data() {
             return {
+                //标题 2->课前预习 1->考试 3->课后复习
+                title: '',
+
                 exerciseList: null,
 
                 testpaperId: null,
@@ -98,8 +104,13 @@
 
             //页面渲染的时候请求习题
             getExerciseData() {
-                exerciseApi.getExerciseContent({"testpaperId": this.testpaperId, "choice": "0"}).then((res) => {
-                    this.getDetails()
+                let paperStatus = judgeStatus(this.$route.query.paperStatus)
+
+                exerciseApi.getExerciseContent({"testpaperId": this.testpaperId, "choice": paperStatus}).then((res) => {
+                    //处于完成状态的时候才需要执答题结果查询
+                    if (this.finishStatus) {
+                        this.getDetails()
+                    }
 
                     this.viewRender(this.dataControl(res.data))
                 })
@@ -109,10 +120,10 @@
             //btn组件点击确认之后触发事件，进行答案提交
             confirmSubmitData(type) {
                 const requestData = {
-                    "studentId": this.$store.state.userInfo.userId,
+                    "studentId": JSON.parse(sessionStorage.getItem("anyworkUserInfo")).userId,
                     "testpaperId": this.testpaperId,
                     // int 1为临时保存，0为正常提交,
-                    "temporarySave": type.submitOrSave,
+                    "temporarySave": type.type,
                     // string 格式为yyyy-MM-dd HH:mm:ss
                     "endTime": globalUtils.getCurrentDate(),
                     "studentAnswer": []
@@ -124,6 +135,7 @@
                 exerciseApi.submitAnswerData(requestData).then(({state, stateInfo}) => {
                     if (state == 1) {
                         Message.success(stateInfo)
+                        this.$router.go(-1)
                     } else {
                         Message.error(stateInfo)
                     }
@@ -149,6 +161,7 @@
                             requestArray.push(data)
                             break
                         }
+                        case 4: {}
                         case 3: {
                             const userAns = item.fillNumber
 
@@ -195,7 +208,11 @@
 
             //从路由参数中获取学生的测试卷子的id
             getExercisePaperId() {
-                let {testpaperId} = this.$route.params
+                let { testpaperId, mode, paperStatus } = this.$route.query
+
+                this.title = judgeMode(mode)
+
+                this.finishStatus = parseInt(paperStatus.toString()) === 1
 
                 this.testpaperId = testpaperId
             },
@@ -203,7 +220,7 @@
             //获取试卷答案 如果用户这份试卷已经完成了 那么就把答案解析显示出来
             getDetails() {
                 if (this.finishStatus) {
-                    exerciseApi.getDoneDetails({testpaperId: this.testpaperId}).then(({state, stateInfo, data}) => {
+                    exerciseApi.getDoneDetails({ testpaperId: this.testpaperId }).then(({state, stateInfo, data}) => {
                         this.score.score = data.socre
 
                         autoFillAns(data, this.exerciseList)

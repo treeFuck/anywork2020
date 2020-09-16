@@ -31,3 +31,8 @@ export function getCurrentDate() {
 export function removeSpace(str) {
     return str.replace(/\s*/g,"")
 }
+
+//用于鉴别一个英文字符距离A的距离下标
+export function charIndexFromA(char) {
+    return char.charCodeAt(0) - "A".charCodeAt(0)
+}

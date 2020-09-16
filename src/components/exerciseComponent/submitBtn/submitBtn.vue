@@ -25,8 +25,8 @@
 
 <template>
     <div class="btn-container">
-        <div class="btn" @click="beforeSubmitConfirm(1)">提交</div>
-        <div class="btn" @click="beforeSubmitConfirm(0)">保存</div>
+        <div class="btn" @click="beforeSubmitConfirm(0)">提交</div>
+        <div class="btn" @click="beforeSubmitConfirm(1)">保存</div>
     </div>
 </template>
 
@@ -52,12 +52,12 @@
 
         methods: {
             //向后台提交数据,提交前的最后询问
-            beforeSubmitConfirm() {
+            beforeSubmitConfirm(type) {
                 Modal.confirm({
                     title: '操作确认',
                     content: '<p>您确认要提交吗</p>',
                     onOk: () => {
-                        this.submitData()
+                        this.submitData(type)
                     },
                 });
             },

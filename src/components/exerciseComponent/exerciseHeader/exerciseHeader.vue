@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="header-right-container">
-            <p>总成绩: {{user_score.score}}分</p>
+            <p v-if="show">总成绩: {{user_score.score}}分</p>
         </div>
     </div>
 </template>
@@ -27,12 +27,17 @@
             },
             score: {
                 type: String | Number
+            },
+            show: {
+                type: Boolean,
             }
         },
 
         data() {
             return {
-                user_score: this.score
+                user_score: this.score,
+
+                showScore: this.show
             }
         }
 

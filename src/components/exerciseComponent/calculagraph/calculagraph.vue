@@ -23,9 +23,9 @@
 
 <template>
     <div class="calculagraph-container">
-        <div class="calculagraph-details-container">
-            {{calculateDate}}
-        </div>
+<!--        <div class="calculagraph-details-container">-->
+<!--            {{calculateDate}}-->
+<!--        </div>-->
 
         <div class="calculagraph-details-container" @click="backToTop">
             回到顶部
@@ -51,7 +51,7 @@
         },
 
         mounted() {
-            this.calculateStart()
+            // this.calculateStart()
         },
 
         methods: {
