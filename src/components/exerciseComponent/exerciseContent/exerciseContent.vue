@@ -2,7 +2,7 @@
     <div class="exercise-content-container">
         <div class="exercise-content-number">
             <p>{{exeNumber}}. ({{exeType}})</p>
-            <Icon :type="isStar.star ? 'ios-star' : 'ios-star-outline'" size="20" style="cursor: pointer"
+            <Icon v-if="isBan" :type="isStar.star ? 'ios-star' : 'ios-star-outline'" size="20" style="cursor: pointer"
                   color="#f5a623" @click="collect"/>
         </div>
 
@@ -27,25 +27,38 @@
                         v-for="item in fillNumber"
                         :key="item.key"
                         v-model="item.fillContent"
+                        :disabled="isBan"
                 >
                 </input>
             </div>
+            <div class="fill-input-container" v-if="type === 4">
+                <Input
+                        v-for="item in fillNumber"
+                        :key="item.key"
+                        v-model="item.fillContent"
+                        :disabled="isBan"
+                        type="textarea"
+                        size="large"
+                />
+            </div>
         </div>
-        <div v-if="!analysisRes.isTrue">
-            <div class="analysis-con" style="color: red">解析:你的答案是错误的。你填写的答案为: {{analysisRes.userAns}}</div>
-            <div class="analysis-con">{{analysisRes.analysis}}</div>
+        <div v-if="isBan">
+            <div class="analysis-con" style="color: red" v-if="!analysisRes.isTrue">解析:你的答案是错误的。你填写的答案为: {{analysisRes.userAns}}</div>
+            <div class="analysis-con" style="color: green" v-else>回答正确</div>
+            <div class="analysis-con" v-if="!analysisRes.isTrue">{{analysisRes.analysis}}</div>
         </div>
     </div>
 </template>
 
 <script>
-    import {Icon, Message} from 'view-design'
+    import {Icon, Message, Input} from 'view-design'
     import exerciseApi from "../../../share/api/exerciseApi";
 
     export default {
         components: {
             Icon,
-            Message
+            Message,
+            Input
         },
 
         name: "exerciseContent",
@@ -62,7 +75,8 @@
             ansList: {type: Array},
             analysis: {type: Object},
             isFinish: {type: Boolean, default: false},
-            star: {type: Object, default: false}
+            star: {type: Object, default: false},
+            ban: {type: Boolean}
         },
 
         data() {
@@ -82,7 +96,9 @@
                 //解析显示
                 analysisRes: this.analysis,
                 //是否收藏
-                isStar: this.star
+                isStar: this.star,
+                //用户是否可以填写 当试卷已经是提交状态则无法填写 取决于父组件的paperStatus
+                isBan: this.ban
             }
         },
 
@@ -106,11 +122,17 @@
                         this.exeType = '填空题'
                         break
                     }
+                    case 4: {
+                        this.exeType = '简答题'
+                    }
                 }
             },
 
             //点击选择题或者判断题选项之后的操作,新选中的按钮更换颜色，原来的按钮还原状态
             chooseItem(node, itemArr) {
+                if (this.ban) {
+                    return
+                }
                 itemArr.forEach(item => {
                     item.isChoose = item === node;
                 })

@@ -125,6 +125,21 @@
           this.userInfo.imagePath = "http://qgailab.com/anywork" + this.userInfo.imagePath;
         })
       },
+
+      /**
+       * 清除所有cookie
+       */
+      // delAllCookie(){    
+      //   var myDate=new Date();    
+      //   myDate.setTime(-1000);//设置时间    
+      //   var data=document.cookie;    
+      //   var dataArray=data.split("; ");    
+      //   console.log(dataArray)
+      //   for(var i=0;i<dataArray.length;i++){    
+      //     var varName=dataArray[i].split("=");    
+      //     document.cookie=""+"=''; expires="+myDate.toGMTString();    
+      //   }    
+      // }
     },
 
     mounted(){

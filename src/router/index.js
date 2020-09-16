@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import SynRouter from './SynRouter'
-
 
 Vue.use(VueRouter)
 
