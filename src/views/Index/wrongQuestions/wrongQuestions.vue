@@ -1,16 +1,41 @@
 <template>
-    <div class="wrongQuestions">
+  <div class="wrongQuestions">
     <div class="big-container">
       <div class="main-container">
         <Indexheader></Indexheader>
         <div class="title">
-          <img src="../../../assets/images/exam@1x.png" alt="problems">
+          <img src="../../../assets/images/exam@1x.png" alt="problems" />
           <div class="title-context">错题收藏</div>
         </div>
 
         <div>
-            <!-- 题目组件 -->
-            
+          <!-- 题目组件 -->
+          <!-- <exerciseContent
+            v-for="item in exerciseList"
+            :key="item.question.questionId"
+            :type="item.question.type"
+            :content="item.question.content"
+            :ansList="item.question"
+            :isTure="item.isTure"
+            :tureAns="item.question.key"
+            :studentAns="item.studentAnswer"
+            :analysis="item.question.analysis"
+            :total="exerciseList.length"
+          ></exerciseContent> -->
+          <collectQuestion
+          v-for="(item, index) in exerciseList"
+            :key="item.question.questionId"
+            :questionId="item.question.questionId"
+            :type="item.question.type"
+            :content="item.question.content"
+            :ansList="item.question"
+            :isTure="item.isTure"
+            :tureAns="item.question.key"
+            :studentAns="item.studentAnswer"
+            :analysis="item.question.analysis"
+            :total="exerciseList.length"
+            :now="index"
+          ></collectQuestion>
         </div>
       </div>
     </div>
@@ -18,44 +43,64 @@
 </template>
 
 <script>
-
 import Indexheader from "../../../components/head/head.vue";
 import WrongQs from "../../../share/api/wrongQuestionApi";
+import exerciseApi from "../../../share/api/exerciseApi";
+import collectQuestion from "../../../components/exerciseComponent/collectQuestion/collectQuestion.vue";
 
 export default {
-    name: 'wrongQuestions',
+  name: "wrongQuestions",
 
-    components: {
-        Indexheader
-    },
+  components: {
+    Indexheader,
+    collectQuestion,
+  },
 
-    data(){
-        return {
-            wrongQuestions:[], //错题，存content、questionid
+  data() {
+    return {
+      wrongQuestions: [], //错题，存content、questionid
+      exerciseList: [], //详细信息
+    };
+  },
+
+  methods: {
+    getWrongQ() {
+      let that = this;
+      WrongQs.getWrongQuestion().then((res) => {
+        // console.log(res);
+        if (res.state == 1) {
+          this.wrongQuestions = res.data;
+          //console.log(this.wrongQuestions); // 只需要ID
+          this.dataControl(res.data);
+        } else {
+          console.log(res.stateInfo);
         }
+      });
     },
 
-    methods: {
-        getWrongQ(){
-            let that = this;
-            WrongQs.getWrongQuestion().then(res => {
-                // console.log(res);
-                if(res.state == 1){
-                    this.wrongQuestions = res.data;
-                    console.log(this.wrongQuestions);
-                } else {
-                    console.log(res.stateInfo);
-                }
-                
-            })
-        },
+    /* 根据id找题目详细信息 */
+    dataControl(arr) {
+      arr.forEach((item, index) => {
+        //console.log(item.questionId);
+        this.getExerciseList(item.questionId);
+      });
+      console.log(this.exerciseList);
     },
+    getExerciseList(id) {
+      WrongQs.getDetailAns({ questionId: id }).then((res/* , xhr */) => {
+        if (res.state == 1 /* && xhr.status == 200 */) {
+          this.exerciseList.push(res.data);
+        }
+      }).catch(err=>{
+        console.log(err);
+      });
+    },
+  },
 
-    mounted(){
-        this.getWrongQ();
-    }    
-
-}
+  mounted() {
+    this.getWrongQ();
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -81,6 +126,5 @@ $fontColor: #548cfe;
       color: $fontColor;
     }
   }
-
 }
 </style>
