@@ -20,7 +20,7 @@
         <div>{{item.ans}}</div>
       </div>
       <div class="fill-input-container" v-if="type === 3">
-              <input
+              <input disabled
                       class="fill-field"
                       v-for="(item, key) in ansControl"
                       :key="key"
