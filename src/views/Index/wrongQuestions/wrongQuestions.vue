@@ -9,19 +9,6 @@
         </div>
 
         <div>
-          <!-- 题目组件 -->
-          <!-- <exerciseContent
-            v-for="item in exerciseList"
-            :key="item.question.questionId"
-            :type="item.question.type"
-            :content="item.question.content"
-            :ansList="item.question"
-            :isTure="item.isTure"
-            :tureAns="item.question.key"
-            :studentAns="item.studentAnswer"
-            :analysis="item.question.analysis"
-            :total="exerciseList.length"
-          ></exerciseContent> -->
           <collectQuestion
           v-for="(item, index) in exerciseList"
             :key="item.question.questionId"
@@ -67,10 +54,8 @@ export default {
     getWrongQ() {
       let that = this;
       WrongQs.getWrongQuestion().then((res) => {
-        // console.log(res);
         if (res.state == 1) {
           this.wrongQuestions = res.data;
-          //console.log(this.wrongQuestions); // 只需要ID
           this.dataControl(res.data);
         } else {
           console.log(res.stateInfo);
@@ -81,14 +66,12 @@ export default {
     /* 根据id找题目详细信息 */
     dataControl(arr) {
       arr.forEach((item, index) => {
-        //console.log(item.questionId);
         this.getExerciseList(item.questionId);
       });
-      console.log(this.exerciseList);
     },
     getExerciseList(id) {
-      WrongQs.getDetailAns({ questionId: id }).then((res/* , xhr */) => {
-        if (res.state == 1 /* && xhr.status == 200 */) {
+      WrongQs.getDetailAns({ questionId: id }).then((res) => {
+        if (res.state == 1 ) {
           this.exerciseList.push(res.data);
         }
       }).catch(err=>{

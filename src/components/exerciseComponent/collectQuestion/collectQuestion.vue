@@ -15,30 +15,30 @@
     </pre>
     <!-- 选项 -->
     <div class="ans-item-container">
-      <div class="ans-row-container" v-for="item in ansControl" v-if="type === 1 || type === 2">
+      <div class="ans-row-container" v-for="(item, key) in ansControl" :key="key" v-if="type === 1 || type === 2">
         <div :style="getChooseColor(item.vocabulary)">{{showCorrectCircle(item.vocabulary)}}</div>
         <div>{{item.ans}}</div>
       </div>
-      <!-- <div class="fill-input-container" v-if="type === 3">
-                <input
-                        class="fill-field"
-                        v-for="item in fillNumber"
-                        :key="item.key"
-                        v-model="item.fillContent"
-                >
-      </div>-->
+      <div class="fill-input-container" v-if="type === 3">
+              <input
+                      class="fill-field"
+                      v-for="(item, key) in ansControl"
+                      :key="key"
+                      v-model="item.fillContent"
+              ></input>
+      </div>
     </div>
     <!-- 解析 -->
     <div v-if="studentAns==''">
       <div class="analysis-con" style="color: red">解析:您未作答，正确答案为{{analysisChange(tureAns)}}。</div>
       <div class="analysis-con">{{analysis}}</div>
     </div>
-    <div v-else-if="!isTrue">
-      <div class="analysis-con" style="color: red">解析:正确答案为{{analysisChange(tureAns)}}，你的答案为 {{analysisChange(studentAns)}}。</div>
-      <div class="analysis-con">{{analysis}}</div>
-    </div>
     <div v-else-if="isTrue">
       <div class="analysis-con" style="color: green">解析:答案正确。</div>
+      <div class="analysis-con">{{analysis}}</div>
+    </div>
+    <div v-else-if="!isTrue">
+      <div class="analysis-con" style="color: red">解析:正确答案为{{analysisChange(tureAns)}}，你的答案为 {{analysisChange(studentAns)}}。</div>
       <div class="analysis-con">{{analysis}}</div>
     </div>
   </div>
@@ -85,7 +85,7 @@ export default {
   },
 
   methods: {
-    //选项数据
+    //处理选项数据
     answerControl() {
       if (this.type == 1) {
         this.ansControl.push({ vocabulary: "A", ans: this.ansList.a });
@@ -95,6 +95,11 @@ export default {
       } else if (this.type == 2) {
         this.ansControl.push({ vocabulary: "1", ans: "正确" });
         this.ansControl.push({ vocabulary: "0", ans: "错误" });
+      } else if (this.type == 3) {
+        let arr = this.studentAns.split("∏");
+        for(let i = 0; i < arr.length; i++) {
+          this.ansControl.push({ fillContent: arr[i] });
+        }
       }
     },
 
@@ -103,6 +108,9 @@ export default {
       if (this.type == 2) {
         if (str == "0") return "错误";
         if (str == "1") return "正确";
+      }
+      if (this.type == 3) {
+        return str.replace(/∏/, ",");
       }
       return str;
     },
