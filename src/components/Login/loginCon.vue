@@ -58,9 +58,9 @@
     },
     data() {
       return {
-        studentId: "3118004971",
-        password: "123456",
-        valcode: "1",
+        studentId: "",
+        password: "",
+        valcode: "",
         loading: false,
 
       };
@@ -99,7 +99,7 @@
         let send = {
           password: this.password,
           studentId: this.studentId,
-          valcode: this.valcode,
+          valcode: 0,
           isTeacher: 0
         }
         if (!this.judeg()) {
