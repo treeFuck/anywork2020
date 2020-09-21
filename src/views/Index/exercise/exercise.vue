@@ -176,8 +176,12 @@
                             if (userAns.length === 1) {
                                 data.studentAnswer = userAns[0].fillContent
                             } else {
+                                console.log(userAns)
                                 userAns.forEach(value => {
-                                    if (!globalUtils.removeSpace(value.fillContent).length) {
+                                    //去除空格以后长度为0，就是用户什么东西都没有写
+                                    if (value.fillContent == "") {
+                                        data.studentAnswer += " " + '∏'
+                                    } else if (!globalUtils.removeSpace(value.fillContent).length) {
                                         data.studentAnswer += " " + '∏'
                                     } else {
                                         data.studentAnswer += value.fillContent + '∏'

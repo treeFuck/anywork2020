@@ -1,5 +1,6 @@
 //user做完了 查看答题记录 需要把用户把答案填充进入execiserrList
 import {charIndexFromA} from "../../../share/utils/globalUtils";
+import * as globalUtils from "../../../share/utils/globalUtils"
 
 /**
  * @author 小余
@@ -10,7 +11,7 @@ import {charIndexFromA} from "../../../share/utils/globalUtils";
 export function reFormatData(outerData, index) {
     const formatData = {
         "index": index + 1,
-        "fillNumber": initFillInputKey(outerData.other, outerData.type, outerData.key),
+        "fillNumber": initFillInputKey(outerData.other, outerData.type, outerData.key, outerData.questionId),
         "questionId": outerData.questionId,
         "analysis": {
             isTrue: null,
@@ -59,7 +60,7 @@ export function reFormatData(outerData, index) {
             const key = outerData.key
             //这一段判断的原因在于用户可能是去做它没有做完的题目
             //那么此时后台数据的key就会有记录,我们需要显示用户做题的记录
-            if (key !== "") {
+            if (globalUtils.removeSpace(key).length) {
                 let index = null
                 index = charIndexFromA(key)
                 formatData.ansList[index].isChoose = true
@@ -84,7 +85,7 @@ export function reFormatData(outerData, index) {
             ]
 
             const key = outerData.key
-            if (key !== "") {
+            if (globalUtils.removeSpace(key).length) {
                 const index = parseInt(key) === 1 ? 0 : 1
                 formatData.ansList[index].isChoose = true
             }
@@ -101,28 +102,30 @@ export function reFormatData(outerData, index) {
 }
 
 //根据outerData.other字段即填空题坑的个数动态生成一个带key和填空内容的数组的数组
-function initFillInputKey(number, type, userAns) {
+function initFillInputKey(number, type, userAns, id) {
     const key = []
 
-    //number为0的时候是论述题
-    if (number == 0) {
-        key.push({key: 0, fillContent: ''})
-    } else {
+    //number为0的时候是简答题
+    if (number == 0 && type == 4) {
+        key.push({ key: 0, fillContent: '' })
+    } else if (type == 3) {
         for (let i = 0; i < number; i++) {
-            key.push({key: i, fillContent: ''})
+            key.push({ key: i, fillContent: "" })
         }
     }
 
     //这里同样需要判断用户是否之前已经有了做题的记录
     if (type == 3 || type == 4) {
-        const userFilled = userAns.split('∏')
+        if (userAns.indexOf("∏") >= 0) {
+            const userFilled = userAns.split('∏')
 
-        if (userFilled.length) {
-            for (let i = 0; i < key.length; i++) {
-                key[i].fillContent = userFilled[i]
+            if (userFilled.length) {
+                for (let i = 0; i < key.length; i++) {
+                    key[i].fillContent = userFilled[i]
+                }
+            } else {
+                key[0].fillContent = userAns
             }
-        } else {
-            key[0].fillContent = userAns
         }
     }
 
