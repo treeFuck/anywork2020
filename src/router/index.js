@@ -60,10 +60,7 @@ const routes = [
 
 const router = new VueRouter({
   routes,
-  mode: 'history',
-  base: process.env.NODE_ENV === 'production'
-      ? process.env.VUE_APP_STATICURL
-      : '/'
+  mode: 'hash',
 })
 
 export default router
