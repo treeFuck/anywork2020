@@ -156,7 +156,7 @@
 
                 exerciseApi[API]({questionId: this.id}).then(({state, stateInfo}) => {
                     if (state == 1) {
-                        Message.success('收藏成功')
+                        Message.success(this.isStar.star ? '收藏成功' : '取消收藏')
                     } else {
                         Message.error(stateInfo)
                     }
