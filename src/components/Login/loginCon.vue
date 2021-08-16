@@ -33,12 +33,12 @@
         <div class="logo"></div>
         <input type="password" v-model="password" placeholder="密码"/>
       </div>
-      <div class="barcode">
+      <!-- <div class="barcode">
         <img class="barcodeImg" :src="barcodeURL" alt="">
         <div class="input">
           <input type="text" v-model="valcode" placeholder="验证码"/>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="forgetPass" @click="forgetPass">忘记密码 ？</div>
     <div class="btnCon">
@@ -88,10 +88,10 @@
           this.$Message.warning("请输入密码");
           return false;
         }
-        if (!this.valcode.trim()) {
-          this.$Message.warning("请输入验证码");
-          return false;
-        }
+        // if (!this.valcode.trim()) {
+        //   this.$Message.warning("请输入验证码");
+        //   return false;
+        // }
         return true;
       },
       // 请求登录
