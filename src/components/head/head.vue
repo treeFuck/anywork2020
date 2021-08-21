@@ -70,10 +70,12 @@
             <ul class="select-ul" v-if="displaySel" @click="selectTo($event)">
                 <li>个人主页</li>
                 <li>修改密码</li>
+                <li>加入组织</li>
                 <li>退出登录</li>
             </ul>
         </div>
     </div>
+
   </div>
 </template>
 
@@ -111,6 +113,8 @@
                   console.log(res, "请求结果：退出登录") 
                   this.$router.push({name:'login'});
                 })
+              }else if(e.target.innerText === '加入组织') {
+                this.$router.push({name:'joinOrganization'})
               }
           }
       },

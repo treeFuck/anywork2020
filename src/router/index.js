@@ -49,6 +49,11 @@ const routes = [
         name: 'newPassword',
         component: () => import('../views/Menu/newPassword/newPassword')
       },
+      {
+        path: 'joinOrganization',
+        name: 'joinOrganization',
+        component: () => import('../views/Menu/joinOrganization/joinOrganization')
+      }
     ]
   },
   {
