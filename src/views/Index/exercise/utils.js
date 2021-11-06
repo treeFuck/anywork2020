@@ -107,7 +107,7 @@ function initFillInputKey(number, type, userAns, id) {
 
     //number为0的时候是简答题
     if (number == 0 && type == 4) {
-        key.push({ key: 0, fillContent: '' })
+        key.push({ key: 0, fillContent: userAns })
     } else if (type == 3) {
         for (let i = 0; i < number; i++) {
             key.push({ key: i, fillContent: "" })
@@ -115,17 +115,14 @@ function initFillInputKey(number, type, userAns, id) {
     }
 
     //这里同样需要判断用户是否之前已经有了做题的记录
-    if (type == 3 || type == 4) {
-        if (userAns.indexOf("∏") >= 0) {
+    if (type == 3 ) {
+        if (userAns.indexOf("∏") != -1) {
             const userFilled = userAns.split('∏')
-
-            if (userFilled.length) {
-                for (let i = 0; i < key.length; i++) {
-                    key[i].fillContent = userFilled[i]
-                }
-            } else {
-                key[0].fillContent = userAns
+            for (let i = 0; i < key.length; i++) {
+                key[i].fillContent = userFilled[i]
             }
+        }else {
+            key[0].fillContent = userAns
         }
     }
 
